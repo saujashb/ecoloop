@@ -64,8 +64,14 @@ async function scorePair(
   );
 
   const [riderUser, driverUser, sharedClusters] = await Promise.all([
-    prisma.user.findUnique({ where: { id: rider.userId } }),
-    prisma.user.findUnique({ where: { id: driver.userId } }),
+    prisma.user.findUnique({
+      where: { id: rider.userId },
+      select: { verified: true },
+    }),
+    prisma.user.findUnique({
+      where: { id: driver.userId },
+      select: { verified: true },
+    }),
     prisma.clusterMember.groupBy({
       by: ["clusterId"],
       where: { userId: { in: [rider.userId, driver.userId] } },

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { sendMessage } from "@/lib/actions";
+import { messageSenderSelect, publicUserSelect } from "@/lib/user-select";
 import { AutoRefresh } from "@/components/AutoRefresh";
 import { formatTime } from "@/lib/days";
 
@@ -19,9 +20,12 @@ export default async function ChatPage({
   const match = await prisma.match.findUnique({
     where: { id: matchId },
     include: {
-      riderSchedule: { include: { user: true } },
-      driverSchedule: { include: { user: true } },
-      messages: { orderBy: { createdAt: "asc" }, include: { sender: true } },
+      riderSchedule: { include: { user: { select: publicUserSelect } } },
+      driverSchedule: { include: { user: { select: publicUserSelect } } },
+      messages: {
+        orderBy: { createdAt: "asc" },
+        include: { sender: { select: messageSenderSelect } },
+      },
     },
   });
 

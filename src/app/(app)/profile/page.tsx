@@ -1,5 +1,6 @@
 import { requireUser } from "@/lib/auth";
 import { logout, updateProfile, updateSchedule } from "@/lib/actions";
+import { DeleteAccountForm } from "@/components/DeleteAccountForm";
 import { DAY_LABELS } from "@/lib/days";
 
 export const dynamic = "force-dynamic";
@@ -178,6 +179,16 @@ export default async function ProfilePage() {
           </form>
         </section>
       ))}
+      <section className="rounded-xl border border-red-200 bg-red-50/50 p-5">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-red-700">
+          Delete account
+        </h2>
+        <p className="mt-2 text-sm text-red-800">
+          Permanently remove your profile, schedules, matches, messages, and ride
+          history. This cannot be undone.
+        </p>
+        <DeleteAccountForm />
+      </section>
     </div>
   );
 }

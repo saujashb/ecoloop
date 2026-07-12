@@ -2,6 +2,7 @@ import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { co2SavedKg, formatCents, uberEstimateCents } from "@/lib/geo";
 import { formatTime } from "@/lib/days";
+import { publicUserSelect } from "@/lib/user-select";
 
 export const dynamic = "force-dynamic";
 
@@ -21,8 +22,8 @@ export default async function ImpactPage() {
     include: {
       match: {
         include: {
-          riderSchedule: { include: { user: true } },
-          driverSchedule: { include: { user: true } },
+          riderSchedule: { include: { user: { select: publicUserSelect } } },
+          driverSchedule: { include: { user: { select: publicUserSelect } } },
         },
       },
     },

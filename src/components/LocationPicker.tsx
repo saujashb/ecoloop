@@ -19,6 +19,12 @@ const markerIcon = L.icon({
 // Research Triangle Park — center of our pilot region.
 const DEFAULT_CENTER: [number, number] = [35.86, -78.84];
 
+const NOMINATIM_HEADERS = {
+  Accept: "application/json",
+  // Required by Nominatim usage policy — identifies the app, not the user.
+  "User-Agent": "EcoLoop/1.0 (commute-matching-app)",
+} as const;
+
 type NominatimResult = {
   lat: string;
   lon: string;
@@ -78,7 +84,7 @@ export default function LocationPicker({
       try {
         const res = await fetch(
           `https://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=us&q=${encodeURIComponent(value)}`,
-          { headers: { Accept: "application/json" } }
+          { headers: NOMINATIM_HEADERS }
         );
         setResults(res.ok ? await res.json() : []);
       } catch {
@@ -94,7 +100,7 @@ export default function LocationPicker({
     try {
       const res = await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
-        { headers: { Accept: "application/json" } }
+        { headers: NOMINATIM_HEADERS }
       );
       if (res.ok) {
         const data = await res.json();

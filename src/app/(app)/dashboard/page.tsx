@@ -5,6 +5,7 @@ import { ensureUpcomingRides } from "@/lib/matching";
 import { cancelRide, completeRide } from "@/lib/actions";
 import { dateKey, keyToUtcDate, formatTime, formatDays } from "@/lib/days";
 import { formatCents } from "@/lib/geo";
+import { publicUserSelect } from "@/lib/user-select";
 
 export const dynamic = "force-dynamic";
 
@@ -30,8 +31,8 @@ export default async function DashboardPage() {
     include: {
       match: {
         include: {
-          riderSchedule: { include: { user: true } },
-          driverSchedule: { include: { user: true } },
+          riderSchedule: { include: { user: { select: publicUserSelect } } },
+          driverSchedule: { include: { user: { select: publicUserSelect } } },
         },
       },
     },
@@ -138,7 +139,7 @@ export default async function DashboardPage() {
                     </Link>
                     {iAmRider && venmo && (
                       <a
-                        href={`https://account.venmo.com/pay?recipients=${venmo}&amount=${(m.fareCents / 100).toFixed(2)}&note=EcoLoop%20ride`}
+                        href={`https://account.venmo.com/pay?recipients=${encodeURIComponent(venmo)}&amount=${encodeURIComponent((m.fareCents / 100).toFixed(2))}&note=${encodeURIComponent("EcoLoop ride")}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="rounded-lg bg-sky-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-sky-700"

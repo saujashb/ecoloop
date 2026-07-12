@@ -7,19 +7,55 @@ import { prisma } from "./db";
 import {
   createSession,
   destroySession,
+  getCurrentUser,
   isVerifiedDomain,
   requireUser,
+  revokeAllSessions,
 } from "./auth";
 import {
   findMatchesForUser,
   generateRides,
 } from "./matching";
+import { failSafe } from "./errors";
+import { checkRateLimit } from "./rate-limit";
+import { getClientIp } from "./request";
+import {
+  clampDaysMask,
+  clampSeats,
+  clampString,
+  isValidLatLng,
+  isValidTimeHHMM,
+  limits,
+  sanitizeMessageBody,
+  sanitizeVenmoHandle,
+} from "./validation";
 
 export type FormState = { error?: string } | undefined;
+
+const AUTH_LIMIT = 5;
+const AUTH_WINDOW_MS = 60_000;
+
+async function enforceAuthRateLimit(action: string): Promise<FormState | undefined> {
+  const ip = await getClientIp();
+  const { ok, retryAfterSec } = checkRateLimit(
+    `action:${action}:${ip}`,
+    AUTH_LIMIT,
+    AUTH_WINDOW_MS
+  );
+  if (!ok) {
+    return {
+      error: `Too many attempts. Try again in ${retryAfterSec} seconds.`,
+    };
+  }
+  return undefined;
+}
 
 // ---------- Auth ----------
 
 export async function signup(_prev: FormState, formData: FormData): Promise<FormState> {
+  const rateLimited = await enforceAuthRateLimit("signup");
+  if (rateLimited) return rateLimited;
+
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const password = String(formData.get("password") ?? "");
@@ -29,7 +65,7 @@ export async function signup(_prev: FormState, formData: FormData): Promise<Form
   }
 
   const existing = await prisma.user.findUnique({ where: { email } });
-  if (existing) return { error: "An account with that email already exists." };
+  if (existing) return { error: "Invalid email or password." };
 
   const emailDomain = email.split("@")[1];
   const user = await prisma.user.create({
@@ -47,6 +83,9 @@ export async function signup(_prev: FormState, formData: FormData): Promise<Form
 }
 
 export async function login(_prev: FormState, formData: FormData): Promise<FormState> {
+  const rateLimited = await enforceAuthRateLimit("login");
+  if (rateLimited) return rateLimited;
+
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const password = String(formData.get("password") ?? "");
 
@@ -60,6 +99,8 @@ export async function login(_prev: FormState, formData: FormData): Promise<FormS
 }
 
 export async function logout() {
+  const user = await getCurrentUser();
+  if (user) await revokeAllSessions(user.id);
   await destroySession();
   redirect("/");
 }
@@ -85,16 +126,37 @@ export type OnboardingPayload = {
 export async function completeOnboarding(payload: OnboardingPayload) {
   const user = await requireUser();
 
+  if (!["rider", "driver", "both"].includes(payload.role)) {
+    failSafe("completeOnboarding: invalid role");
+  }
+  if (
+    !isValidLatLng(payload.origin.lat, payload.origin.lng) ||
+    !isValidLatLng(payload.dest.lat, payload.dest.lng)
+  ) {
+    failSafe("completeOnboarding: invalid coordinates");
+  }
+  if (!isValidTimeHHMM(payload.arriveStart) || !isValidTimeHHMM(payload.arriveEnd)) {
+    failSafe("completeOnboarding: invalid time window");
+  }
+  if (payload.arriveStart >= payload.arriveEnd) {
+    failSafe("completeOnboarding: inverted time window");
+  }
+
+  const days = clampDaysMask(payload.days);
+  if (days === 0) failSafe("completeOnboarding: no commute days");
+
+  const seats = clampSeats(payload.seats);
+
   await prisma.user.update({
     where: { id: user.id },
     data: {
       role: payload.role,
-      bio: payload.bio || null,
+      bio: clampString(payload.bio, limits.MAX_BIO) || null,
       prefQuietRide: payload.prefQuietRide,
       prefMusicOk: payload.prefMusicOk,
-      venmoHandle: payload.venmoHandle || null,
-      emergencyName: payload.emergencyName || null,
-      emergencyPhone: payload.emergencyPhone || null,
+      venmoHandle: sanitizeVenmoHandle(payload.venmoHandle),
+      emergencyName: clampString(payload.emergencyName, limits.MAX_EMERGENCY_NAME) || null,
+      emergencyPhone: clampString(payload.emergencyPhone, limits.MAX_PHONE) || null,
       onboarded: true,
     },
   });
@@ -107,16 +169,16 @@ export async function completeOnboarding(payload: OnboardingPayload) {
       data: {
         userId: user.id,
         type,
-        originLabel: payload.origin.label,
+        originLabel: clampString(payload.origin.label, limits.MAX_LABEL),
         originLat: payload.origin.lat,
         originLng: payload.origin.lng,
-        destLabel: payload.dest.label,
+        destLabel: clampString(payload.dest.label, limits.MAX_LABEL),
         destLat: payload.dest.lat,
         destLng: payload.dest.lng,
         arriveStart: payload.arriveStart,
         arriveEnd: payload.arriveEnd,
-        days: payload.days,
-        seats: type === "driver" ? payload.seats : 1,
+        days,
+        seats: type === "driver" ? seats : 1,
       },
     });
   }
@@ -143,9 +205,9 @@ async function assertUserInMatch(matchId: string, userId: string) {
     (match.riderSchedule.userId !== userId &&
       match.driverSchedule.userId !== userId)
   ) {
-    throw new Error("Match not found");
+    failSafe("assertUserInMatch: unauthorized or missing match");
   }
-  return match;
+  return match!;
 }
 
 export async function acceptMatch(formData: FormData) {
@@ -201,7 +263,7 @@ async function setRideStatus(rideId: string, userId: string, status: string) {
     (ride.match.riderSchedule.userId !== userId &&
       ride.match.driverSchedule.userId !== userId)
   ) {
-    throw new Error("Ride not found");
+    failSafe("setRideStatus: unauthorized or missing ride");
   }
   await prisma.ride.update({ where: { id: rideId }, data: { status } });
   revalidatePath("/dashboard");
@@ -223,7 +285,7 @@ export async function completeRide(formData: FormData) {
 export async function sendMessage(formData: FormData) {
   const user = await requireUser();
   const matchId = String(formData.get("matchId"));
-  const body = String(formData.get("body") ?? "").trim();
+  const body = sanitizeMessageBody(String(formData.get("body") ?? ""));
   if (!body) return;
   await assertUserInMatch(matchId, user.id);
   await prisma.message.create({
@@ -261,11 +323,13 @@ export async function updateProfile(formData: FormData) {
   await prisma.user.update({
     where: { id: user.id },
     data: {
-      name: String(formData.get("name") ?? user.name),
-      bio: String(formData.get("bio") ?? "") || null,
-      venmoHandle: String(formData.get("venmoHandle") ?? "") || null,
-      emergencyName: String(formData.get("emergencyName") ?? "") || null,
-      emergencyPhone: String(formData.get("emergencyPhone") ?? "") || null,
+      name: clampString(String(formData.get("name") ?? user.name), limits.MAX_NAME),
+      bio: clampString(String(formData.get("bio") ?? ""), limits.MAX_BIO) || null,
+      venmoHandle: sanitizeVenmoHandle(String(formData.get("venmoHandle") ?? "")),
+      emergencyName:
+        clampString(String(formData.get("emergencyName") ?? ""), limits.MAX_EMERGENCY_NAME) ||
+        null,
+      emergencyPhone: clampString(String(formData.get("emergencyPhone") ?? ""), limits.MAX_PHONE) || null,
       prefQuietRide: formData.get("prefQuietRide") === "on",
       prefMusicOk: formData.get("prefMusicOk") === "on",
     },
@@ -279,22 +343,46 @@ export async function updateSchedule(formData: FormData) {
   const schedule = await prisma.commuteSchedule.findUnique({
     where: { id: scheduleId },
   });
-  if (!schedule || schedule.userId !== user.id) throw new Error("Not found");
+  if (!schedule || schedule.userId !== user.id) {
+    failSafe("updateSchedule: unauthorized or missing schedule");
+  }
 
   let days = 0;
   for (let i = 0; i < 7; i++) {
     if (formData.get(`day${i}`) === "on") days |= 1 << i;
   }
-  if (days === 0) days = schedule.days;
+  days = clampDaysMask(days === 0 ? schedule.days : days);
+
+  const arriveStart = String(formData.get("arriveStart") ?? schedule.arriveStart);
+  const arriveEnd = String(formData.get("arriveEnd") ?? schedule.arriveEnd);
+  if (!isValidTimeHHMM(arriveStart) || !isValidTimeHHMM(arriveEnd) || arriveStart >= arriveEnd) {
+    failSafe("updateSchedule: invalid schedule window");
+  }
 
   await prisma.commuteSchedule.update({
     where: { id: scheduleId },
     data: {
-      arriveStart: String(formData.get("arriveStart") ?? schedule.arriveStart),
-      arriveEnd: String(formData.get("arriveEnd") ?? schedule.arriveEnd),
+      arriveStart,
+      arriveEnd,
       days,
-      seats: Number(formData.get("seats") ?? schedule.seats) || schedule.seats,
+      seats: schedule.type === "driver" ? clampSeats(Number(formData.get("seats") ?? schedule.seats)) : 1,
     },
   });
   revalidatePath("/profile");
+}
+
+export async function deleteAccount(
+  _prev: FormState,
+  formData: FormData
+): Promise<FormState> {
+  const user = await requireUser();
+  const confirmation = String(formData.get("confirmation") ?? "").trim();
+  if (confirmation !== "DELETE") {
+    return { error: "Type DELETE to confirm account removal." };
+  }
+
+  await revokeAllSessions(user.id);
+  await destroySession();
+  await prisma.user.delete({ where: { id: user.id } });
+  redirect("/");
 }

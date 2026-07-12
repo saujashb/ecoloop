@@ -22,6 +22,7 @@ model User {
   emergencyName  String?
   emergencyPhone String?
   onboarded      Boolean  @default(false)
+  sessionVersion Int      @default(0)
   createdAt      DateTime @default(now())
 
   schedules CommuteSchedule[]

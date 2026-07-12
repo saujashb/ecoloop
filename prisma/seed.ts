@@ -132,7 +132,6 @@ const seedUsers = [
 ] as const;
 
 async function main() {
-  console.log("Clearing existing data...");
   await prisma.message.deleteMany();
   await prisma.ride.deleteMany();
   await prisma.match.deleteMany();
@@ -141,7 +140,6 @@ async function main() {
   await prisma.cluster.deleteMany();
   await prisma.user.deleteMany();
 
-  console.log("Creating clusters...");
   const clusters = await Promise.all(
     [
       {
@@ -163,7 +161,6 @@ async function main() {
   );
   const clusterByName = new Map(clusters.map((c) => [c.name, c]));
 
-  console.log("Creating users and schedules...");
   const passwordHash = await bcrypt.hash(requireSeedPassword(), 10);
   const usersByEmail = new Map<string, string>();
 
@@ -216,12 +213,9 @@ async function main() {
     }
   }
 
-  console.log("Running matching engine...");
   for (const id of usersByEmail.values()) {
     await findMatchesForUser(id);
   }
-  const proposalCount = await prisma.match.count();
-  console.log(`Created ${proposalCount} match proposals.`);
 
   // Accept Maya <-> Alex so the demo account has a live commute buddy.
   const mayaId = usersByEmail.get("maya@ncsu.edu")!;
@@ -234,7 +228,6 @@ async function main() {
   });
 
   if (demoMatch) {
-    console.log("Accepting demo match (Maya <-> Alex) and generating rides...");
     await prisma.match.update({
       where: { id: demoMatch.id },
       data: { status: "accepted" },
@@ -280,14 +273,7 @@ async function main() {
         },
       ],
     });
-  } else {
-    console.warn("Demo match not found — check matching thresholds.");
   }
-
-  console.log("Seed complete.");
-  console.log("Demo rider:  maya@ncsu.edu");
-  console.log("Demo driver: alex.chen@cisco.com");
-  console.log("(password set via SEED_DEMO_PASSWORD — not logged)");
 }
 
 main()

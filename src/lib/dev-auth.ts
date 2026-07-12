@@ -1,6 +1,7 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { sessionCookieOptions } from "./cookies";
 import { requireEnv } from "./env";
 
 const COOKIE_NAME = "ecoloop_dev_session";
@@ -20,12 +21,7 @@ export async function createDevSession() {
     .setIssuedAt()
     .setExpirationTime("8h")
     .sign(devSecret());
-  (await cookies()).set(COOKIE_NAME, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    path: "/dev",
-    maxAge: MAX_AGE,
-  });
+  (await cookies()).set(COOKIE_NAME, token, sessionCookieOptions("/dev", MAX_AGE));
 }
 
 export async function destroyDevSession() {

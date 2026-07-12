@@ -3,11 +3,16 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 import { prisma } from "./db";
+import { sessionCookieOptions } from "./cookies";
 import { requireEnv } from "./env";
+import { ownUserSelect } from "./user-select";
 
-const secret = new TextEncoder().encode(requireEnv("SESSION_SECRET"));
 const COOKIE_NAME = "ecoloop_session";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+
+function sessionSecret() {
+  return new TextEncoder().encode(requireEnv("SESSION_SECRET"));
+}
 
 // Domains of companies common in our pilot regions; .edu is always verified.
 const KNOWN_COMPANY_DOMAINS = new Set([
@@ -32,16 +37,27 @@ export function isVerifiedDomain(domain: string): boolean {
 }
 
 export async function createSession(userId: string) {
-  const token = await new SignJWT({ sub: userId })
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { sessionVersion: true },
+  });
+  if (!user) return;
+
+  const token = await new SignJWT({
+    sub: userId,
+    sv: user.sessionVersion,
+  })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("30d")
-    .sign(secret);
-  (await cookies()).set(COOKIE_NAME, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    path: "/",
-    maxAge: MAX_AGE,
+    .sign(sessionSecret());
+  (await cookies()).set(COOKIE_NAME, token, sessionCookieOptions("/", MAX_AGE));
+}
+
+export async function revokeAllSessions(userId: string) {
+  await prisma.user.update({
+    where: { id: userId },
+    data: { sessionVersion: { increment: 1 } },
   });
 }
 
@@ -53,8 +69,18 @@ export async function getSessionUserId(): Promise<string | null> {
   const token = (await cookies()).get(COOKIE_NAME)?.value;
   if (!token) return null;
   try {
-    const { payload } = await jwtVerify(token, secret);
-    return (payload.sub as string) ?? null;
+    const { payload } = await jwtVerify(token, sessionSecret());
+    const userId = payload.sub as string | undefined;
+    const sessionVersion = payload.sv as number | undefined;
+    if (!userId || sessionVersion === undefined) return null;
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { sessionVersion: true },
+    });
+    if (!user || user.sessionVersion !== sessionVersion) return null;
+
+    return userId;
   } catch {
     return null;
   }
@@ -65,10 +91,7 @@ export const getCurrentUser = cache(async () => {
   if (!id) return null;
   return prisma.user.findUnique({
     where: { id },
-    include: {
-      schedules: { where: { active: true } },
-      clusters: { include: { cluster: true } },
-    },
+    select: ownUserSelect,
   });
 });
 

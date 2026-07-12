@@ -9,12 +9,13 @@ import {
 } from "@/lib/actions";
 import { formatDays, formatTime } from "@/lib/days";
 import { formatCents } from "@/lib/geo";
+import { publicUserSelect } from "@/lib/user-select";
 
 export const dynamic = "force-dynamic";
 
 const matchInclude = {
-  riderSchedule: { include: { user: true } },
-  driverSchedule: { include: { user: true } },
+  riderSchedule: { include: { user: { select: publicUserSelect } } },
+  driverSchedule: { include: { user: { select: publicUserSelect } } },
 } as const;
 
 function VerifiedBadge() {

@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { joinCluster, leaveCluster } from "@/lib/actions";
 import { haversineMiles } from "@/lib/geo";
 import { formatDays, formatTime } from "@/lib/days";
+import { publicUserSelect } from "@/lib/user-select";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +15,10 @@ export default async function CommunityPage() {
 
   const others = await prisma.user.findMany({
     where: { id: { not: user.id }, onboarded: true },
-    include: { schedules: { where: { active: true } } },
+    select: {
+      ...publicUserSelect,
+      schedules: { where: { active: true } },
+    },
   });
 
   const nearby = others

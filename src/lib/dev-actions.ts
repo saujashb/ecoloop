@@ -7,6 +7,8 @@ import {
   isDevDashboardEnabled,
   verifyDevPassword,
 } from "./dev-auth";
+import { checkRateLimit } from "./rate-limit";
+import { getClientIp } from "./request";
 
 export type DevFormState = { error?: string } | undefined;
 
@@ -15,8 +17,21 @@ export async function devLogin(
   formData: FormData
 ): Promise<DevFormState> {
   if (!isDevDashboardEnabled()) {
-    return { error: "Dev dashboard is disabled. Set DEV_ADMIN_SECRET." };
+    return { error: "Dev dashboard is not available." };
   }
+
+  const ip = await getClientIp();
+  const { ok, retryAfterSec } = checkRateLimit(
+    `action:dev-login:${ip}`,
+    5,
+    60_000
+  );
+  if (!ok) {
+    return {
+      error: `Too many attempts. Try again in ${retryAfterSec} seconds.`,
+    };
+  }
+
   const password = String(formData.get("password") ?? "");
   if (!verifyDevPassword(password)) {
     return { error: "Invalid dev password." };

@@ -16,8 +16,7 @@ export default async function DevLoginPage() {
           </p>
           <h1 className="mt-2 text-xl font-semibold text-white">Disabled</h1>
           <p className="mt-2 text-sm text-slate-400">
-            Set <code className="text-emerald-400">DEV_ADMIN_SECRET</code> in your
-            environment to enable this page.
+            This dashboard is not enabled in this environment.
           </p>
         </div>
       </main>
