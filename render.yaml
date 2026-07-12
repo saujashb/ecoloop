@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: ecoloop
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run vercel-build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: DATABASE_URL
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true

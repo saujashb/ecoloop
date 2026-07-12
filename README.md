@@ -57,7 +57,13 @@ Morrisville, Apex, Durham, Raleigh, and Chapel Hill commuting to the Cisco RTP c
 - `src/app/(app)/` — authenticated app (dashboard, matches, community, impact, chat, profile)
 - `src/components/LocationPicker.tsx` — Leaflet map + Nominatim search picker
 
-## Environment
+## Dev dashboard
+
+Password-protected pilot metrics at **`/dev`** (not linked from the public app).
+
+Set `DEV_ADMIN_SECRET` in your environment, then visit `/dev/login`.
+
+Tracks: new signups, rider/driver/both breakdown, onboarded vs incomplete, match and ride counts, signups chart (14 days), top email domains, and a full accounts table.
 
 `.env` (created by `prisma init`):
 
