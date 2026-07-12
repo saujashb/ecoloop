@@ -3,7 +3,15 @@ import { prisma } from "../src/lib/db";
 import { findMatchesForUser, generateRides } from "../src/lib/matching";
 import { dateKey, keyToUtcDate, jsDayToIndex, dayBit } from "../src/lib/days";
 
-const PASSWORD = "ecoloop123";
+function requireSeedPassword(): string {
+  const value = process.env.SEED_DEMO_PASSWORD?.trim();
+  if (!value) {
+    throw new Error(
+      "Missing SEED_DEMO_PASSWORD — set it in .env before running db:seed."
+    );
+  }
+  return value;
+}
 const WEEKDAYS = 0b0011111; // Mon–Fri
 
 // Research Triangle Park pilot area
@@ -156,7 +164,7 @@ async function main() {
   const clusterByName = new Map(clusters.map((c) => [c.name, c]));
 
   console.log("Creating users and schedules...");
-  const passwordHash = await bcrypt.hash(PASSWORD, 10);
+  const passwordHash = await bcrypt.hash(requireSeedPassword(), 10);
   const usersByEmail = new Map<string, string>();
 
   for (const u of seedUsers) {
@@ -277,13 +285,17 @@ async function main() {
   }
 
   console.log("Seed complete.");
-  console.log(`Demo rider:  maya@ncsu.edu / ${PASSWORD}`);
-  console.log(`Demo driver: alex.chen@cisco.com / ${PASSWORD}`);
+  console.log("Demo rider:  maya@ncsu.edu");
+  console.log("Demo driver: alex.chen@cisco.com");
+  console.log("(password set via SEED_DEMO_PASSWORD — not logged)");
 }
 
 main()
   .catch((e) => {
-    console.error(e);
+    console.error(
+      "Seed failed:",
+      e instanceof Error ? e.message : "Unknown error"
+    );
     process.exit(1);
   })
   .finally(() => prisma.$disconnect());

@@ -3,10 +3,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 import { prisma } from "./db";
+import { requireEnv } from "./env";
 
-const secret = new TextEncoder().encode(
-  process.env.SESSION_SECRET ?? "ecoloop-dev-secret-change-in-production"
-);
+const secret = new TextEncoder().encode(requireEnv("SESSION_SECRET"));
 const COOKIE_NAME = "ecoloop_session";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 

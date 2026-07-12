@@ -21,7 +21,7 @@ pre-scheduled, zero-detour rides at a flat fare.
 ## Stack
 
 - [Next.js 16](https://nextjs.org) (App Router) + TypeScript + Tailwind CSS 4
-- Prisma 6 + SQLite (swap `datasource` to Postgres for production)
+- Prisma 6 + PostgreSQL (Neon)
 - Custom email/password auth (bcrypt + JWT session cookie via `jose`)
 - Leaflet + OpenStreetMap tiles, Nominatim geocoding (no API keys needed)
 
@@ -29,14 +29,28 @@ pre-scheduled, zero-detour rides at a flat fare.
 
 ```bash
 npm install
-npx prisma migrate dev   # creates prisma/dev.db
-npm run db:seed          # demo users, matches, and ride history
-npm run dev              # http://localhost:3000
+cp .env.example .env          # fill in real values — never commit .env
+npx prisma db push
+npm run db:seed               # requires SEED_DEMO_PASSWORD in .env
+npm run dev                   # http://localhost:3000
 ```
+
+## Environment variables
+
+Copy `.env.example` to `.env` and set:
+
+| Variable | Required | Notes |
+| --- | --- | --- |
+| `DATABASE_URL` | Yes | PostgreSQL connection string (Neon pooled URL recommended) |
+| `SESSION_SECRET` | Yes | JWT signing secret for user sessions (`openssl rand -base64 32`) |
+| `DEV_ADMIN_SECRET` | No | Enables password-protected `/dev` dashboard; leave unset to disable |
+| `SEED_DEMO_PASSWORD` | Seed only | Password for demo accounts created by `npm run db:seed` |
+
+No `NEXT_PUBLIC_*` variables are used — nothing sensitive is exposed to the browser bundle.
 
 ## Demo accounts
 
-All seeded accounts use the password `ecoloop123`:
+After seeding, demo logins use the password from your `SEED_DEMO_PASSWORD` env var (not hardcoded):
 
 | Email | Role |
 | --- | --- |
@@ -65,10 +79,21 @@ Set `DEV_ADMIN_SECRET` in your environment, then visit `/dev/login`.
 
 Tracks: new signups, rider/driver/both breakdown, onboarded vs incomplete, match and ride counts, signups chart (14 days), top email domains, and a full accounts table.
 
-`.env` (created by `prisma init`):
+## Security
 
-```
-DATABASE_URL="file:./dev.db"
-```
+- **Secrets live in environment variables only** — see `.env.example` for the full list.
+- **`.env` is gitignored** — only `.env.example` (placeholders) is committed.
+- **No `NEXT_PUBLIC_*` or `REACT_APP_*` vars** — JWT secrets, DB URLs, and admin passwords are server-side only.
+- **Auth errors are generic** — login failures return "Invalid email or password", never token or hash details.
+- **Seed script does not log passwords** — demo credentials use `SEED_DEMO_PASSWORD` from env.
 
-Optionally set `SESSION_SECRET` for signing session tokens (a dev fallback is used otherwise).
+### Rotate secrets if they were ever hardcoded
+
+Earlier commits contained development fallback strings and a hardcoded seed password (`ecoloop123`, `ecoloop-dev-secret-change-in-production`, `ecoloop-dev-admin`). **If this repo was ever public or shared, rotate immediately:**
+
+1. `SESSION_SECRET` — invalidates all user sessions
+2. `DEV_ADMIN_SECRET` — invalidates dev dashboard access
+3. `SEED_DEMO_PASSWORD` / demo user passwords — re-run seed or reset demo accounts
+4. `DATABASE_URL` password — rotate in Neon if the connection string was ever exposed
+
+Treat anything that appeared in git history as compromised even after removal from the current code.

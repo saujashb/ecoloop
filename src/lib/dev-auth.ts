@@ -1,14 +1,13 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { requireEnv } from "./env";
 
 const COOKIE_NAME = "ecoloop_dev_session";
 const MAX_AGE = 60 * 60 * 8; // 8 hours
 
 function devSecret() {
-  return new TextEncoder().encode(
-    process.env.DEV_ADMIN_SECRET ?? process.env.SESSION_SECRET ?? "ecoloop-dev-admin"
-  );
+  return new TextEncoder().encode(requireEnv("DEV_ADMIN_SECRET"));
 }
 
 export function isDevDashboardEnabled(): boolean {
