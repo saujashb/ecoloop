@@ -47,6 +47,15 @@ export function sanitizeMessageBody(value: string): string | null {
   return body.length > 0 ? body : null;
 }
 
+/** Prisma cuid-style IDs used across the schema. */
+export function isValidResourceId(value: string): boolean {
+  return /^[a-z0-9]{20,32}$/i.test(value.trim());
+}
+
+export function isValidEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length <= 254;
+}
+
 export const limits = {
   MAX_NAME,
   MAX_BIO,

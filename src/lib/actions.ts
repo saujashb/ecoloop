@@ -23,7 +23,9 @@ import {
   clampDaysMask,
   clampSeats,
   clampString,
+  isValidEmail,
   isValidLatLng,
+  isValidResourceId,
   isValidTimeHHMM,
   limits,
   sanitizeMessageBody,
@@ -35,19 +37,23 @@ export type FormState = { error?: string } | undefined;
 const AUTH_LIMIT = 5;
 const AUTH_WINDOW_MS = 60_000;
 
-async function enforceAuthRateLimit(action: string): Promise<FormState | undefined> {
-  const ip = await getClientIp();
-  const { ok, retryAfterSec } = checkRateLimit(
-    `action:${action}:${ip}`,
-    AUTH_LIMIT,
-    AUTH_WINDOW_MS
-  );
+async function enforceRateLimit(
+  key: string,
+  limit: number,
+  windowMs: number
+): Promise<FormState | undefined> {
+  const { ok, retryAfterSec } = checkRateLimit(key, limit, windowMs);
   if (!ok) {
     return {
-      error: `Too many attempts. Try again in ${retryAfterSec} seconds.`,
+      error: `Too many requests. Try again in ${retryAfterSec} seconds.`,
     };
   }
   return undefined;
+}
+
+async function enforceAuthRateLimit(action: string): Promise<FormState | undefined> {
+  const ip = await getClientIp();
+  return enforceRateLimit(`action:${action}:${ip}`, AUTH_LIMIT, AUTH_WINDOW_MS);
 }
 
 // ---------- Auth ----------
@@ -56,11 +62,11 @@ export async function signup(_prev: FormState, formData: FormData): Promise<Form
   const rateLimited = await enforceAuthRateLimit("signup");
   if (rateLimited) return rateLimited;
 
-  const name = String(formData.get("name") ?? "").trim();
+  const name = clampString(String(formData.get("name") ?? "").trim(), limits.MAX_NAME);
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const password = String(formData.get("password") ?? "");
 
-  if (!name || !email.includes("@") || password.length < 8) {
+  if (!name || !isValidEmail(email) || password.length < 8) {
     return { error: "Please fill all fields (password must be 8+ characters)." };
   }
 
@@ -125,6 +131,10 @@ export type OnboardingPayload = {
 
 export async function completeOnboarding(payload: OnboardingPayload) {
   const user = await requireUser();
+
+  if (user.onboarded) {
+    failSafe("completeOnboarding: already onboarded");
+  }
 
   if (!["rider", "driver", "both"].includes(payload.role)) {
     failSafe("completeOnboarding: invalid role");
@@ -191,11 +201,21 @@ export async function completeOnboarding(payload: OnboardingPayload) {
 
 export async function refreshMatches() {
   const user = await requireUser();
+  const limited = await enforceRateLimit(
+    `refresh-matches:${user.id}`,
+    3,
+    60_000
+  );
+  if (limited) failSafe("refreshMatches: rate limited");
+
   await findMatchesForUser(user.id);
   revalidatePath("/matches");
 }
 
 async function assertUserInMatch(matchId: string, userId: string) {
+  if (!isValidResourceId(matchId)) {
+    failSafe("assertUserInMatch: invalid match id");
+  }
   const match = await prisma.match.findUnique({
     where: { id: matchId },
     include: { riderSchedule: true, driverSchedule: true },
@@ -213,7 +233,10 @@ async function assertUserInMatch(matchId: string, userId: string) {
 export async function acceptMatch(formData: FormData) {
   const user = await requireUser();
   const matchId = String(formData.get("matchId"));
-  await assertUserInMatch(matchId, user.id);
+  const match = await assertUserInMatch(matchId, user.id);
+  if (match.status !== "proposed") {
+    failSafe("acceptMatch: invalid match status");
+  }
   await prisma.match.update({
     where: { id: matchId },
     data: { status: "accepted" },
@@ -226,7 +249,10 @@ export async function acceptMatch(formData: FormData) {
 export async function declineMatch(formData: FormData) {
   const user = await requireUser();
   const matchId = String(formData.get("matchId"));
-  await assertUserInMatch(matchId, user.id);
+  const match = await assertUserInMatch(matchId, user.id);
+  if (match.status !== "proposed") {
+    failSafe("declineMatch: invalid match status");
+  }
   await prisma.match.update({
     where: { id: matchId },
     data: { status: "declined" },
@@ -237,7 +263,10 @@ export async function declineMatch(formData: FormData) {
 export async function endMatch(formData: FormData) {
   const user = await requireUser();
   const matchId = String(formData.get("matchId"));
-  await assertUserInMatch(matchId, user.id);
+  const match = await assertUserInMatch(matchId, user.id);
+  if (match.status !== "accepted") {
+    failSafe("endMatch: invalid match status");
+  }
   await prisma.match.update({
     where: { id: matchId },
     data: { status: "ended" },
@@ -251,7 +280,10 @@ export async function endMatch(formData: FormData) {
 
 // ---------- Rides ----------
 
-async function setRideStatus(rideId: string, userId: string, status: string) {
+async function setRideStatus(rideId: string, userId: string, status: "cancelled" | "completed") {
+  if (!isValidResourceId(rideId)) {
+    failSafe("setRideStatus: invalid ride id");
+  }
   const ride = await prisma.ride.findUnique({
     where: { id: rideId },
     include: {
@@ -264,6 +296,9 @@ async function setRideStatus(rideId: string, userId: string, status: string) {
       ride.match.driverSchedule.userId !== userId)
   ) {
     failSafe("setRideStatus: unauthorized or missing ride");
+  }
+  if (ride.status !== "scheduled") {
+    failSafe("setRideStatus: invalid ride status");
   }
   await prisma.ride.update({ where: { id: rideId }, data: { status } });
   revalidatePath("/dashboard");
@@ -285,6 +320,13 @@ export async function completeRide(formData: FormData) {
 export async function sendMessage(formData: FormData) {
   const user = await requireUser();
   const matchId = String(formData.get("matchId"));
+  const limited = await enforceRateLimit(
+    `message:${user.id}:${matchId}`,
+    30,
+    60_000
+  );
+  if (limited) failSafe("sendMessage: rate limited");
+
   const body = sanitizeMessageBody(String(formData.get("body") ?? ""));
   if (!body) return;
   await assertUserInMatch(matchId, user.id);
@@ -299,6 +341,13 @@ export async function sendMessage(formData: FormData) {
 export async function joinCluster(formData: FormData) {
   const user = await requireUser();
   const clusterId = String(formData.get("clusterId"));
+  if (!isValidResourceId(clusterId)) {
+    failSafe("joinCluster: invalid cluster id");
+  }
+  const cluster = await prisma.cluster.findUnique({ where: { id: clusterId } });
+  if (!cluster) {
+    failSafe("joinCluster: cluster not found");
+  }
   await prisma.clusterMember.upsert({
     where: { userId_clusterId: { userId: user.id, clusterId } },
     update: {},
@@ -310,6 +359,9 @@ export async function joinCluster(formData: FormData) {
 export async function leaveCluster(formData: FormData) {
   const user = await requireUser();
   const clusterId = String(formData.get("clusterId"));
+  if (!isValidResourceId(clusterId)) {
+    failSafe("leaveCluster: invalid cluster id");
+  }
   await prisma.clusterMember.deleteMany({
     where: { userId: user.id, clusterId },
   });
@@ -340,6 +392,9 @@ export async function updateProfile(formData: FormData) {
 export async function updateSchedule(formData: FormData) {
   const user = await requireUser();
   const scheduleId = String(formData.get("scheduleId"));
+  if (!isValidResourceId(scheduleId)) {
+    failSafe("updateSchedule: invalid schedule id");
+  }
   const schedule = await prisma.commuteSchedule.findUnique({
     where: { id: scheduleId },
   });

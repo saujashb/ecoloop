@@ -1,6 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { sessionCookieOptions } from "./cookies";
 import { requireEnv } from "./env";
 
@@ -40,11 +40,12 @@ export async function isDevAuthenticated(): Promise<boolean> {
   }
 }
 
-export async function requireDevAuth() {
-  if (!isDevDashboardEnabled()) return false;
+export async function requireDevAuth(): Promise<void> {
+  if (!isDevDashboardEnabled()) {
+    notFound();
+  }
   const ok = await isDevAuthenticated();
   if (!ok) redirect("/dev/login");
-  return true;
 }
 
 export function verifyDevPassword(password: string): boolean {

@@ -131,7 +131,133 @@ const seedUsers = [
   },
 ] as const;
 
+async function upsertDemoUsers(passwordHash: string) {
+  const clusters = await Promise.all(
+    [
+      {
+        name: "RTP Interns",
+        region: "Research Triangle Park, NC",
+        description: "Summer interns and co-ops commuting into RTP campuses.",
+      },
+      {
+        name: "DFW Summer Analysts",
+        region: "Dallas–Fort Worth, TX",
+        description: "Analysts and interns across the DFW metroplex.",
+      },
+      {
+        name: "Coppell Commuters",
+        region: "Coppell, TX",
+        description: "Daily commuters into Coppell business parks.",
+      },
+    ].map((c) =>
+      prisma.cluster.upsert({
+        where: { name: c.name },
+        update: { region: c.region, description: c.description },
+        create: c,
+      })
+    )
+  );
+  const clusterByName = new Map(clusters.map((c) => [c.name, c]));
+  const usersByEmail = new Map<string, string>();
+
+  for (const u of seedUsers) {
+    const emailDomain = u.email.split("@")[1];
+    const verified =
+      emailDomain.endsWith(".edu") ||
+      ["cisco.com", "ibm.com", "ti.com"].includes(emailDomain);
+
+    const user = await prisma.user.upsert({
+      where: { email: u.email },
+      update: {
+        name: u.name,
+        passwordHash,
+        role: u.role,
+        bio: u.bio,
+        prefQuietRide: u.prefQuietRide,
+        prefMusicOk: u.prefMusicOk,
+        venmoHandle: "venmoHandle" in u ? u.venmoHandle : null,
+        onboarded: true,
+        verified,
+      },
+      create: {
+        name: u.name,
+        email: u.email,
+        emailDomain,
+        verified,
+        passwordHash,
+        role: u.role,
+        bio: u.bio,
+        prefQuietRide: u.prefQuietRide,
+        prefMusicOk: u.prefMusicOk,
+        venmoHandle: "venmoHandle" in u ? u.venmoHandle : null,
+        onboarded: true,
+      },
+    });
+    usersByEmail.set(u.email, user.id);
+
+    await prisma.commuteSchedule.deleteMany({ where: { userId: user.id } });
+
+    const types = u.role === "both" ? ["rider", "driver"] : [u.role];
+    for (const type of types) {
+      await prisma.commuteSchedule.create({
+        data: {
+          userId: user.id,
+          type,
+          originLabel: u.origin.label,
+          originLat: u.origin.lat,
+          originLng: u.origin.lng,
+          destLabel: CISCO_RTP.label,
+          destLat: CISCO_RTP.lat,
+          destLng: CISCO_RTP.lng,
+          arriveStart: u.arriveStart,
+          arriveEnd: u.arriveEnd,
+          days: "days" in u ? u.days : WEEKDAYS,
+          seats: type === "driver" && "seats" in u ? u.seats : 1,
+        },
+      });
+    }
+
+    await prisma.clusterMember.deleteMany({ where: { userId: user.id } });
+    for (const clusterName of u.clusters) {
+      const cluster = clusterByName.get(clusterName)!;
+      await prisma.clusterMember.create({
+        data: { userId: user.id, clusterId: cluster.id },
+      });
+    }
+  }
+
+  for (const id of usersByEmail.values()) {
+    await findMatchesForUser(id);
+  }
+
+  const mayaId = usersByEmail.get("maya@ncsu.edu");
+  const alexId = usersByEmail.get("alex.chen@cisco.com");
+  if (!mayaId || !alexId) return;
+
+  const demoMatch = await prisma.match.findFirst({
+    where: {
+      riderSchedule: { userId: mayaId },
+      driverSchedule: { userId: alexId },
+    },
+  });
+  if (!demoMatch) return;
+
+  await prisma.match.update({
+    where: { id: demoMatch.id },
+    data: { status: "accepted" },
+  });
+  await generateRides(demoMatch.id);
+}
+
 async function main() {
+  const passwordHash = await bcrypt.hash(requireSeedPassword(), 10);
+
+  // Production deploys must not wipe real user accounts.
+  if (process.env.NODE_ENV === "production") {
+    await upsertDemoUsers(passwordHash);
+    return;
+  }
+
   await prisma.message.deleteMany();
   await prisma.ride.deleteMany();
   await prisma.match.deleteMany();
@@ -161,7 +287,6 @@ async function main() {
   );
   const clusterByName = new Map(clusters.map((c) => [c.name, c]));
 
-  const passwordHash = await bcrypt.hash(requireSeedPassword(), 10);
   const usersByEmail = new Map<string, string>();
 
   for (const u of seedUsers) {
