@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  emailDomain    String
+  verified       Boolean  @default(false)
+  passwordHash   String
+  name           String
+  role           String   @default("rider") // rider | driver | both
+  bio            String?
+  prefQuietRide  Boolean  @default(false)
+  prefMusicOk    Boolean  @default(true)
+  venmoHandle    String?
+  emergencyName  String?
+  emergencyPhone String?
+  onboarded      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  schedules CommuteSchedule[]
+  messages  Message[]
+  clusters  ClusterMember[]
+}
+
+model CommuteSchedule {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        String // "driver" (offering rides) | "rider" (needing rides)
+  originLabel String
+  originLat   Float
+  originLng   Float
+  destLabel   String
+  destLat     Float
+  destLng     Float
+  arriveStart String // "08:15" — start of arrival window
+  arriveEnd   String // "08:45" — end of arrival window
+  days        Int // bitmask: Mon=1, Tue=2, Wed=4, Thu=8, Fri=16, Sat=32, Sun=64
+  seats       Int      @default(1)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  riderMatches  Match[] @relation("RiderSchedule")
+  driverMatches Match[] @relation("DriverSchedule")
+}
+
+model Match {
+  id               String          @id @default(cuid())
+  riderScheduleId  String
+  riderSchedule    CommuteSchedule @relation("RiderSchedule", fields: [riderScheduleId], references: [id], onDelete: Cascade)
+  driverScheduleId String
+  driverSchedule   CommuteSchedule @relation("DriverSchedule", fields: [driverScheduleId], references: [id], onDelete: Cascade)
+  status           String          @default("proposed") // proposed | accepted | declined | ended
+  score            Float           @default(0)
+  fareCents        Int             @default(400)
+  distanceMiles    Float           @default(0)
+  sharedDays       Int             @default(0) // bitmask of days both sides share
+  createdAt        DateTime        @default(now())
+
+  rides    Ride[]
+  messages Message[]
+
+  @@unique([riderScheduleId, driverScheduleId])
+}
+
+model Ride {
+  id     String   @id @default(cuid())
+  matchId String
+  match  Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  date   DateTime // UTC midnight of the calendar day
+  status String   @default("scheduled") // scheduled | completed | cancelled | no_show
+
+  @@unique([matchId, date])
+}
+
+model Cluster {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  region      String
+  description String?
+
+  members ClusterMember[]
+}
+
+model ClusterMember {
+  userId    String
+  clusterId String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cluster   Cluster @relation(fields: [clusterId], references: [id], onDelete: Cascade)
+  joinedAt  DateTime @default(now())
+
+  @@id([userId, clusterId])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  matchId   String
+  match     Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  senderId  String
+  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  body      String
+  createdAt DateTime @default(now())
+}
