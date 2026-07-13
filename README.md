@@ -7,6 +7,8 @@ TDM reporting**.
 
 Pilot partner: **GoTriangle** (Research Triangle Park). See `docs/GOTRIANGLE-PITCH.md`.
 
+**Origin story:** Built by a Cisco RTP intern who commutes from Chapel Hill without a car — CH Transit → GoTriangle → RTP Connect daily, while a direct drive is ~20 minutes.
+
 ## Features
 
 ### Commuter app

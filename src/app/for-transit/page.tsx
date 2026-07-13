@@ -67,6 +67,31 @@ export default async function ForTransitPage() {
         </div>
       </section>
 
+      <section className="mx-auto max-w-3xl px-4 py-16">
+        <h2 className="text-center text-2xl font-bold text-gray-900">
+          The commute that started this
+        </h2>
+        <p className="mt-6 text-sm leading-relaxed text-gray-600">
+          EcoLoop&apos;s founder is a Cisco RTP intern commuting from Chapel Hill
+          without a car — for the second summer in a row. Chapel Hill means cheaper
+          rent than stipend housing, but the daily reality is: Chapel Hill Transit
+          (or a long walk) → GoTriangle to the Regional Transit Center (~1 hour) →
+          RTP Connect for the last mile to campus. The drive itself is about 20
+          minutes.
+        </p>
+        <p className="mt-4 text-sm leading-relaxed text-gray-600">
+          This summer, housing was picked within walking distance of a GoTriangle
+          stop to shorten the first leg. The trip is still multi-modal, still daily,
+          still an hour-plus door-to-door. EcoLoop is the missing layer: a{" "}
+          <strong>recurring carpool</strong> with someone already driving that
+          corridor — complementing fixed-route service and RTP Connect, not replacing
+          them.
+        </p>
+        <p className="mt-6 rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-center text-sm font-medium text-sky-900">
+          Pilot corridor: Chapel Hill ↔ Research Triangle Park (Cisco RTP and peers)
+        </p>
+      </section>
+
       <section className="mx-auto max-w-4xl px-4 py-16">
         <h2 className="text-center text-2xl font-bold text-gray-900">
           Why partner with EcoLoop

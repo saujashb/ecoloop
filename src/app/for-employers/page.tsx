@@ -43,6 +43,11 @@ export default async function ForEmployersPage() {
             commuters get matched on recurring corridors, and you get participation
             and impact reporting.
           </p>
+          <p className="mt-4 text-sm text-emerald-700">
+            Started by a Cisco RTP intern who chose Chapel Hill housing over stipend
+            housing — and spent two summers stitching together CH Transit, GoTriangle,
+            and RTP Connect for a trip that should take 20 minutes by car.
+          </p>
         </div>
       </section>
 

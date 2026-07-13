@@ -6,6 +6,25 @@ EcoLoop proposes a **90-day recurring carpool pilot** in Research Triangle Park,
 
 **EcoLoop fills the recurring daily commute gap for carless early-career workers in RTP — with measurable TDM outcomes GoTriangle can report, at lower per-trip cost than repeated TNC subsidies.**
 
+## Founder context (why this exists)
+
+EcoLoop was built by a **current Cisco RTP intern** who has lived this commute for two summers in a row.
+
+**The housing tradeoff:** Chapel Hill offers cheaper rent than company stipend housing — but only if you can actually get to RTP without a car.
+
+**Last summer (no car):**
+1. Walk ~30 minutes *or* take Chapel Hill Transit (every 30 minutes, after a 5-minute walk to the stop)
+2. Transfer to a **GoTriangle bus** — ~1 hour to the Regional Transit Center
+3. **RTP Connect** subsidized Lyft/Uber for the last mile from RTC to the Cisco campus
+
+**The gap:** A direct drive from Chapel Hill to Cisco RTP is about **20 minutes**. The multi-modal reality is **well over an hour**, every single weekday, all summer.
+
+**This summer:** The same stack — but housing was deliberately chosen within walking distance of a GoTriangle stop to shorten the first leg. Still multi-modal. Still daily. Still not a 20-minute trip.
+
+**What EcoLoop would change:** A recurring carpool with a driver already making the Chapel Hill → RTP corridor — same person every morning, flat fare, zero daily coordination. GoTriangle and RTP Connect stay in the stack where they help; EcoLoop fills the **recurring corridor** that no single mode solves today.
+
+This is not a hypothetical TAM slide. It is the founder's commute.
+
 ## The problem GoTriangle already knows
 
 - RTP is low-density; fixed-route service cannot reach every campus doorstep ([NC State ITRE microtransit report](https://itre.ncsu.edu/wp-content/uploads/2023/04/Microtransit-Report-3-8-23.pdf)).
@@ -73,7 +92,7 @@ Email **commute@rtp.org** (GoRTP / RTP transportation management):
 
 > Subject: Pilot proposal — recurring carpools for carless RTP interns (complements RTP Connect)
 >
-> Short body: EcoLoop matches carless summer interns with drivers already on their corridor. We have a live pilot stack and TDM dashboard. Seeking 30-min call to explore a 90-day GoTriangle co-branded pilot. Deck + live demo links attached.
+> Short body: I'm a Cisco RTP intern who commutes from Chapel Hill without a car — CH Transit → GoTriangle → RTP Connect, every day, while a direct drive is 20 minutes. I built EcoLoop to match recurring carpools on corridors like this. We have a live pilot stack and TDM dashboard. Seeking 30-min call to explore a 90-day GoTriangle co-branded pilot.
 
 Attach: this doc, link to `/for-transit` and `/partner/gotriangle`.
 

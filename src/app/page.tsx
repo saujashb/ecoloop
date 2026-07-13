@@ -51,6 +51,9 @@ export default async function LandingPage() {
             early-career commuters with drivers already on their daily route —
             with program-level TDM reporting, not just another rideshare app.
           </p>
+          <p className="mx-auto mt-3 max-w-xl text-sm text-emerald-700">
+            Built by a Cisco RTP intern who commutes from Chapel Hill without a car.
+          </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
               href="/for-transit"
@@ -73,6 +76,43 @@ export default async function LandingPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-3xl px-4 py-16">
+        <h2 className="text-center text-2xl font-bold text-gray-900">
+          Built from a real commute
+        </h2>
+        <p className="mt-4 text-center text-sm text-gray-500">
+          Chapel Hill → Cisco RTP · two summers · no car
+        </p>
+        <div className="mt-8 space-y-4 rounded-2xl border border-gray-200 bg-gray-50 p-6 text-sm text-gray-700">
+          <p>
+            For two summers, the founder chose Chapel Hill for cheaper housing than
+            the company stipend — but getting to Cisco RTP without a car meant a
+            daily multi-modal chain:
+          </p>
+          <ol className="list-decimal space-y-2 pl-5">
+            <li>
+              Chapel Hill Transit (or a 30-minute walk) to reach a stop — often a
+              30-minute wait between buses, plus a 5-minute walk from the apartment
+            </li>
+            <li>
+              GoTriangle bus for nearly an hour to the Regional Transit Center
+            </li>
+            <li>RTP Connect Uber subsidy for the last mile from RTC to campus</li>
+          </ol>
+          <p>
+            A direct drive is about <strong>20 minutes</strong>. This stack is well
+            over an hour, every weekday, all summer. This year, housing was chosen
+            within walking distance of a GoTriangle stop — shortening leg one, but
+            not solving the whole trip.
+          </p>
+          <p className="font-medium text-emerald-800">
+            EcoLoop matches a recurring carpool on that corridor — same driver,
+            same rider, flat fare — so GoTriangle and RTP Connect stay where they
+            help, and the daily grind gets simpler.
+          </p>
         </div>
       </section>
 

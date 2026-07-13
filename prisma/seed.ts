@@ -163,7 +163,7 @@ async function seedPartnerOrganizations() {
       slug: "rtp-intern-commute-2026",
       name: "RTP Recurring Carpool Pilot",
       description:
-        "Summer 2026 pilot matching carless interns with drivers on existing RTP corridors.",
+        "Summer 2026 pilot matching carless interns with drivers on existing RTP corridors — starting with Chapel Hill ↔ Cisco RTP, where multi-modal transit (CH Transit → GoTriangle → RTP Connect) turns a 20-minute drive into an hour-plus daily commute.",
       status: "pilot",
     },
   });
