@@ -1,7 +1,7 @@
-# EcoLoop
+# Cadence
 
 **B2B2C institutional commute programs** for transit agencies and employers.
-EcoLoop matches carless early-career commuters with drivers already making the
+Cadence matches carless early-career commuters with drivers already making the
 same daily trip — recurring, pre-scheduled, zero-detour carpools with **partner-level
 TDM reporting**.
 

@@ -53,7 +53,7 @@ export function BottomNav() {
               key={tab.href}
               href={tab.href}
               className={`flex flex-col items-center gap-0.5 px-3 py-2 text-[11px] font-medium ${
-                active ? "text-emerald-700" : "text-gray-500"
+                active ? "text-brand-700" : "text-gray-500"
               }`}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-6 w-6">
@@ -80,7 +80,7 @@ export function TopNav() {
             href={tab.href}
             className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
               active
-                ? "bg-emerald-100 text-emerald-800"
+                ? "bg-brand-100 text-brand-800"
                 : "text-gray-600 hover:bg-gray-100"
             }`}
           >

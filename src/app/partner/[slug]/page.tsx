@@ -42,8 +42,8 @@ export default async function PartnerReportPage({
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-5">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600">
-              EcoLoop partner report
+            <p className="text-xs font-semibold uppercase tracking-widest text-brand-600">
+              Cadence partner report
             </p>
             <h1 className="text-xl font-bold text-slate-900">
               {stats.organization.name}
@@ -51,7 +51,7 @@ export default async function PartnerReportPage({
             {stats.program && (
               <p className="text-sm text-slate-600">
                 {stats.program.name}
-                <span className="ml-2 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800">
+                <span className="ml-2 rounded-full bg-brand-100 px-2 py-0.5 text-xs font-medium text-brand-800">
                   {stats.program.status}
                 </span>
               </p>
@@ -59,7 +59,7 @@ export default async function PartnerReportPage({
           </div>
           <Link
             href={isTransit ? "/for-transit" : "/for-employers"}
-            className="text-sm text-slate-500 hover:text-emerald-700"
+            className="text-sm text-slate-500 hover:text-brand-700"
           >
             ← Partner info
           </Link>
@@ -67,9 +67,9 @@ export default async function PartnerReportPage({
       </header>
 
       <div className="mx-auto max-w-5xl space-y-8 px-4 py-8">
-        <section className="rounded-2xl border border-emerald-200 bg-emerald-50 px-6 py-5">
-          <h2 className="font-semibold text-emerald-900">TDM impact summary</h2>
-          <p className="mt-2 text-sm text-emerald-800">
+        <section className="rounded-2xl border border-brand-200 bg-brand-50 px-6 py-5">
+          <h2 className="font-semibold text-brand-900">TDM impact summary</h2>
+          <p className="mt-2 text-sm text-brand-800">
             {isTransit
               ? "Recurring carpools complement fixed-route transit by filling first/last-mile gaps for carless early-career commuters — with measurable mode shift away from single-occupancy vehicles and subsidized TNC trips."
               : "Program participation, match rates, and commute reliability for carless employees and interns."}
@@ -130,7 +130,7 @@ export default async function PartnerReportPage({
                     title={`${w.week}: ${w.count}`}
                   >
                     <div
-                      className="w-full rounded-t bg-emerald-500"
+                      className="w-full rounded-t bg-brand-500"
                       style={{
                         height: `${Math.max(4, (w.count / maxWeek) * 100)}%`,
                       }}
@@ -201,7 +201,7 @@ export default async function PartnerReportPage({
         )}
 
         <p className="text-center text-xs text-slate-400">
-          Updated on each page load from live program data. EcoLoop is a commute
+          Updated on each page load from live program data. Cadence is a commute
           connector — riders pay drivers directly.
         </p>
       </div>

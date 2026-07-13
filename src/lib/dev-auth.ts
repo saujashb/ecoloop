@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { sessionCookieOptions } from "./cookies";
 import { requireEnv } from "./env";
 
-const COOKIE_NAME = "ecoloop_dev_session";
+const COOKIE_NAME = "cadence_dev_session";
 const MAX_AGE = 60 * 60 * 8; // 8 hours
 
 function devSecret() {

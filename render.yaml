@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: ecoloop
+    name: cadence
     runtime: node
     plan: free
     buildCommand: npm install && npm run vercel-build

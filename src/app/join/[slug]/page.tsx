@@ -22,9 +22,9 @@ export default async function JoinPage({
         ctaLabel="Enroll now"
       />
 
-      <section className="bg-gradient-to-b from-emerald-50 to-white px-4 py-16">
+      <section className="bg-gradient-to-b from-brand-50 to-white px-4 py-16">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600">
+          <p className="text-xs font-semibold uppercase tracking-widest text-brand-600">
             {isTransit ? "Transit partner program" : "Employer program"}
           </p>
           <h1 className="mt-3 text-3xl font-bold text-gray-900 sm:text-4xl">
@@ -38,13 +38,13 @@ export default async function JoinPage({
           )}
           <Link
             href={`/signup?org=${org.slug}`}
-            className="mt-8 inline-block rounded-xl bg-emerald-600 px-8 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+            className="mt-8 inline-block rounded-xl bg-brand-600 px-8 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700"
           >
             Create your account
           </Link>
           <p className="mt-4 text-sm text-gray-500">
             Already enrolled?{" "}
-            <Link href="/login" className="font-medium text-emerald-700 hover:underline">
+            <Link href="/login" className="font-medium text-brand-700 hover:underline">
               Sign in
             </Link>
           </p>

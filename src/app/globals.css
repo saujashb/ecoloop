@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7faf7;
-  --foreground: #132a1c;
+  --background: #fafaf9;
+  --foreground: #1c1917;
 }
 
 @theme inline {
@@ -10,6 +10,29 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Corridor Dawn — charcoal + burnt orange + transit blue */
+  --color-brand-50: #fff7ed;
+  --color-brand-100: #ffedd5;
+  --color-brand-200: #fed7aa;
+  --color-brand-300: #fdba74;
+  --color-brand-400: #fb923c;
+  --color-brand-500: #ea580c;
+  --color-brand-600: #c2410c;
+  --color-brand-700: #9a3412;
+  --color-brand-800: #292524;
+  --color-brand-900: #1c1917;
+  --color-brand-950: #0c0a09;
+
+  --color-transit-50: #f0f9ff;
+  --color-transit-100: #e0f2fe;
+  --color-transit-200: #bae6fd;
+  --color-transit-500: #0ea5e9;
+  --color-transit-700: #0369a1;
+  --color-transit-900: #0c4a6e;
+
+  --color-tdm-600: #0d9488;
+  --color-tdm-700: #0f766e;
 }
 
 body {

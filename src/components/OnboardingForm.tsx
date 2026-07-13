@@ -77,7 +77,7 @@ export function OnboardingForm({ userName }: { userName: string }) {
   }
 
   const inputCls =
-    "mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500";
+    "mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500";
 
   return (
     <div className="mx-auto w-full max-w-lg px-4 pb-16 pt-8">
@@ -85,14 +85,14 @@ export function OnboardingForm({ userName }: { userName: string }) {
       <div className="mb-8">
         <div className="flex justify-between text-xs font-medium text-gray-500">
           {STEPS.map((s, i) => (
-            <span key={s} className={i <= step ? "text-emerald-700" : ""}>
+            <span key={s} className={i <= step ? "text-brand-700" : ""}>
               {s}
             </span>
           ))}
         </div>
         <div className="mt-2 h-1.5 rounded-full bg-gray-200">
           <div
-            className="h-1.5 rounded-full bg-emerald-600 transition-all"
+            className="h-1.5 rounded-full bg-brand-600 transition-all"
             style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
           />
         </div>
@@ -101,7 +101,7 @@ export function OnboardingForm({ userName }: { userName: string }) {
       {step === 0 && (
         <section>
           <h2 className="text-xl font-semibold text-gray-900">
-            Hi {userName.split(" ")[0]}! How will you use EcoLoop?
+            Hi {userName.split(" ")[0]}! How will you use Cadence?
           </h2>
           <p className="mt-1 text-sm text-gray-500">
             You can always change this later.
@@ -120,8 +120,8 @@ export function OnboardingForm({ userName }: { userName: string }) {
                 onClick={() => setRole(value)}
                 className={`w-full rounded-xl border p-4 text-left transition ${
                   role === value
-                    ? "border-emerald-600 bg-emerald-50 ring-1 ring-emerald-600"
-                    : "border-gray-200 bg-white hover:border-emerald-300"
+                    ? "border-brand-600 bg-brand-50 ring-1 ring-brand-600"
+                    : "border-gray-200 bg-white hover:border-brand-300"
                 }`}
               >
                 <span className="block font-medium text-gray-900">{title}</span>
@@ -224,8 +224,8 @@ export function OnboardingForm({ userName }: { userName: string }) {
                     onClick={() => setDays((d) => d ^ dayBit(i))}
                     className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
                       active
-                        ? "bg-emerald-600 text-white"
-                        : "bg-white text-gray-600 ring-1 ring-gray-300 hover:ring-emerald-400"
+                        ? "bg-brand-600 text-white"
+                        : "bg-white text-gray-600 ring-1 ring-gray-300 hover:ring-brand-400"
                     }`}
                   >
                     {label}
@@ -259,7 +259,7 @@ export function OnboardingForm({ userName }: { userName: string }) {
                   type="checkbox"
                   checked={prefQuietRide}
                   onChange={(e) => setPrefQuietRide(e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                  className="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
                 />
                 Prefer a quiet ride
               </label>
@@ -268,7 +268,7 @@ export function OnboardingForm({ userName }: { userName: string }) {
                   type="checkbox"
                   checked={prefMusicOk}
                   onChange={(e) => setPrefMusicOk(e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                  className="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
                 />
                 Music is okay
               </label>
@@ -330,7 +330,7 @@ export function OnboardingForm({ userName }: { userName: string }) {
             type="button"
             onClick={() => setStep((s) => s + 1)}
             disabled={!canAdvance()}
-            className="rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-50"
+            className="rounded-lg bg-brand-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:opacity-50"
           >
             Continue
           </button>
@@ -339,7 +339,7 @@ export function OnboardingForm({ userName }: { userName: string }) {
             type="button"
             onClick={submit}
             disabled={pending}
-            className="rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-60"
+            className="rounded-lg bg-brand-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60"
           >
             {pending ? "Finding matches…" : "Finish & find matches"}
           </button>

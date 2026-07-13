@@ -22,7 +22,7 @@ const DEFAULT_CENTER: [number, number] = [35.86, -78.84];
 const NOMINATIM_HEADERS = {
   Accept: "application/json",
   // Required by Nominatim usage policy — identifies the app, not the user.
-  "User-Agent": "EcoLoop/1.0 (commute-matching-app)",
+  "User-Agent": "Cadence/1.0 (commute-matching-app)",
 } as const;
 
 type NominatimResult = {
@@ -119,7 +119,7 @@ export default function LocationPicker({
           value={query}
           onChange={(e) => handleQueryChange(e.target.value)}
           placeholder={placeholder}
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
         />
         {searching && (
           <span className="absolute right-3 top-2.5 text-xs text-gray-400">…</span>
@@ -139,7 +139,7 @@ export default function LocationPicker({
                     setQuery("");
                     setResults([]);
                   }}
-                  className="block w-full px-3 py-2 text-left text-sm hover:bg-emerald-50"
+                  className="block w-full px-3 py-2 text-left text-sm hover:bg-brand-50"
                 >
                   {r.display_name}
                 </button>

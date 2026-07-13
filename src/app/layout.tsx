@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EcoLoop — Community-powered commuting",
+  title: "Cadence — Recurring corridor carpools",
   description:
-    "Match with a consistent commute buddy already driving your route. Affordable, predictable, sustainable daily rides for interns, students, and early-career professionals.",
+    "Cadence matches carless early-career commuters with drivers already on their daily route — institutional commute programs with TDM reporting for transit and employer partners.",
 };
 
 export default function RootLayout({

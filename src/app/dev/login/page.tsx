@@ -29,7 +29,7 @@ export default async function DevLoginPage() {
     <main className="flex min-h-dvh items-center justify-center bg-slate-950 px-4">
       <div className="w-full max-w-sm">
         <p className="mb-6 text-center font-mono text-xs uppercase tracking-widest text-slate-500">
-          EcoLoop · Dev
+          Cadence · Dev
         </p>
         <div className="rounded-xl border border-slate-700 bg-slate-900 p-6">
           <h1 className="text-lg font-semibold text-white">Developer access</h1>

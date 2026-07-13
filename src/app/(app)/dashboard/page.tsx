@@ -71,7 +71,7 @@ export default async function DashboardPage() {
       {proposedCount > 0 && (
         <Link
           href="/matches"
-          className="block rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800 transition hover:bg-emerald-100"
+          className="block rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm font-medium text-brand-800 transition hover:bg-brand-100"
         >
           You have {proposedCount} proposed match{proposedCount > 1 ? "es" : ""} waiting —
           review them →
@@ -86,7 +86,7 @@ export default async function DashboardPage() {
         {todayRides.length === 0 ? (
           <div className="rounded-xl border border-dashed border-gray-300 bg-white p-6 text-center text-sm text-gray-500">
             Nothing scheduled today.{" "}
-            <Link href="/matches" className="font-medium text-emerald-700 hover:underline">
+            <Link href="/matches" className="font-medium text-brand-700 hover:underline">
               Find a match
             </Link>{" "}
             to set up your recurring commute.
@@ -120,7 +120,7 @@ export default async function DashboardPage() {
                     <span
                       className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${
                         ride.status === "scheduled"
-                          ? "bg-emerald-100 text-emerald-800"
+                          ? "bg-brand-100 text-brand-800"
                           : ride.status === "completed"
                             ? "bg-gray-100 text-gray-600"
                             : "bg-red-50 text-red-600"
@@ -139,7 +139,7 @@ export default async function DashboardPage() {
                     </Link>
                     {iAmRider && venmo && (
                       <a
-                        href={`https://account.venmo.com/pay?recipients=${encodeURIComponent(venmo)}&amount=${encodeURIComponent((m.fareCents / 100).toFixed(2))}&note=${encodeURIComponent("EcoLoop ride")}`}
+                        href={`https://account.venmo.com/pay?recipients=${encodeURIComponent(venmo)}&amount=${encodeURIComponent((m.fareCents / 100).toFixed(2))}&note=${encodeURIComponent("Cadence ride")}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="rounded-lg bg-sky-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-sky-700"
@@ -151,7 +151,7 @@ export default async function DashboardPage() {
                       <>
                         <form action={completeRide}>
                           <input type="hidden" name="rideId" value={ride.id} />
-                          <button className="rounded-lg border border-emerald-600 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-50">
+                          <button className="rounded-lg border border-brand-600 px-3 py-1.5 text-xs font-semibold text-brand-700 hover:bg-brand-50">
                             Mark completed
                           </button>
                         </form>
@@ -229,7 +229,7 @@ export default async function DashboardPage() {
                 className={`mr-2 rounded-full px-2 py-0.5 text-xs font-medium ${
                   s.type === "driver"
                     ? "bg-amber-100 text-amber-800"
-                    : "bg-emerald-100 text-emerald-800"
+                    : "bg-brand-100 text-brand-800"
                 }`}
               >
                 {s.type === "driver" ? "Offering rides" : "Needing rides"}

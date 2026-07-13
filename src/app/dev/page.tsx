@@ -50,15 +50,15 @@ export default async function DevDashboardPage() {
       <header className="border-b border-slate-800 bg-slate-900/80">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-emerald-500">
-              EcoLoop Dev
+            <p className="font-mono text-xs uppercase tracking-widest text-brand-500">
+              Cadence Dev
             </p>
             <h1 className="text-lg font-semibold text-white">Pilot metrics</h1>
           </div>
           <div className="flex items-center gap-3">
             <Link
               href="/partner/gotriangle"
-              className="text-sm text-emerald-400 hover:text-white"
+              className="text-sm text-brand-400 hover:text-white"
             >
               Partner report →
             </Link>
@@ -215,7 +215,7 @@ export default async function DevDashboardPage() {
                   {d.count > 0 ? d.count : ""}
                 </span>
                 <div
-                  className="w-full rounded-t bg-emerald-600/80"
+                  className="w-full rounded-t bg-brand-600/80"
                   style={{
                     height: `${Math.max(4, (d.count / maxSignup) * 80)}px`,
                   }}
@@ -300,7 +300,7 @@ export default async function DevDashboardPage() {
                       <td className="px-4 py-3">
                         <div className="flex flex-wrap gap-1">
                           {u.onboarded && (
-                            <span className="rounded bg-emerald-950 px-1.5 py-0.5 text-[10px] text-emerald-400">
+                            <span className="rounded bg-brand-950 px-1.5 py-0.5 text-[10px] text-brand-400">
                               onboarded
                             </span>
                           )}

@@ -74,9 +74,9 @@ export default async function ImpactPage() {
         {stats.map((s) => (
           <div
             key={s.label}
-            className="rounded-xl border border-emerald-100 bg-gradient-to-b from-emerald-50 to-white p-4"
+            className="rounded-xl border border-brand-100 bg-gradient-to-b from-brand-50 to-white p-4"
           >
-            <p className="text-xs font-medium uppercase tracking-wide text-emerald-700">
+            <p className="text-xs font-medium uppercase tracking-wide text-brand-700">
               {s.label}
             </p>
             <p className="mt-1 text-2xl font-semibold text-gray-900">{s.value}</p>
@@ -119,7 +119,7 @@ export default async function ImpactPage() {
                     <p
                       className={`text-sm font-medium ${
                         ride.status === "completed"
-                          ? "text-emerald-700"
+                          ? "text-brand-700"
                           : ride.status === "cancelled"
                             ? "text-red-500"
                             : "text-gray-400"

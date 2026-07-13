@@ -6,7 +6,7 @@ import { DAY_LABELS } from "@/lib/days";
 export const dynamic = "force-dynamic";
 
 const inputCls =
-  "mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500";
+  "mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500";
 
 export default async function ProfilePage() {
   const user = await requireUser();
@@ -19,7 +19,7 @@ export default async function ProfilePage() {
           <p className="mt-1 text-sm text-gray-500">
             {user.email}
             {user.verified && (
-              <span className="ml-2 rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-medium text-emerald-800">
+              <span className="ml-2 rounded-full bg-brand-100 px-2 py-0.5 text-[11px] font-medium text-brand-800">
                 Verified {user.emailDomain.endsWith(".edu") ? "student" : "professional"}
               </span>
             )}
@@ -90,7 +90,7 @@ export default async function ProfilePage() {
                 type="checkbox"
                 name="prefQuietRide"
                 defaultChecked={user.prefQuietRide}
-                className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                className="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
               />
               Prefer a quiet ride
             </label>
@@ -99,12 +99,12 @@ export default async function ProfilePage() {
                 type="checkbox"
                 name="prefMusicOk"
                 defaultChecked={user.prefMusicOk}
-                className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                className="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
               />
               Music is okay
             </label>
           </div>
-          <button className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700">
+          <button className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-700">
             Save profile
           </button>
         </form>
@@ -154,7 +154,7 @@ export default async function ProfilePage() {
                       type="checkbox"
                       name={`day${i}`}
                       defaultChecked={Boolean(s.days & (1 << i))}
-                      className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                      className="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
                     />
                     {label}
                   </label>
@@ -173,7 +173,7 @@ export default async function ProfilePage() {
                 </select>
               </div>
             )}
-            <button className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700">
+            <button className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-700">
               Save schedule
             </button>
           </form>

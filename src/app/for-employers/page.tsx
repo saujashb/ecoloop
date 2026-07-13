@@ -18,7 +18,7 @@ const benefits = [
   },
   {
     title: "No fleet, no ops burden",
-    desc: "Employees who already drive opt in as drivers. EcoLoop handles matching, scheduling, and verification.",
+    desc: "Employees who already drive opt in as drivers. Cadence handles matching, scheduling, and verification.",
   },
 ];
 
@@ -28,22 +28,22 @@ export default async function ForEmployersPage() {
 
   return (
     <main className="min-h-dvh bg-white">
-      <SiteHeader ctaHref="mailto:hello@ecoloop.app" ctaLabel="Partner with us" />
+      <SiteHeader ctaHref="mailto:hello@cadence.app" ctaLabel="Partner with us" />
 
-      <section className="bg-gradient-to-b from-emerald-50 to-white px-4 py-16">
+      <section className="bg-gradient-to-b from-brand-50 to-white px-4 py-16">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-widest text-brand-700">
             For employers &amp; intern programs
           </p>
           <h1 className="mt-3 text-4xl font-bold text-gray-900">
             Give carless interns a commute that actually works
           </h1>
           <p className="mt-5 text-lg text-gray-600">
-            EcoLoop is a B2B2C commute program: your organization enrolls cohorts,
+            Cadence is a B2B2C commute program: your organization enrolls cohorts,
             commuters get matched on recurring corridors, and you get participation
             and impact reporting.
           </p>
-          <p className="mt-4 text-sm text-emerald-700">
+          <p className="mt-4 text-sm text-brand-700">
             Started by a Cisco RTP intern who chose Chapel Hill housing over stipend
             housing — and spent two summers stitching together CH Transit, GoTriangle,
             and RTP Connect for a trip that should take 20 minutes by car.
@@ -56,7 +56,7 @@ export default async function ForEmployersPage() {
           {benefits.map((b) => (
             <div
               key={b.title}
-              className="rounded-xl border border-emerald-100 bg-gradient-to-b from-emerald-50/50 to-white p-5"
+              className="rounded-xl border border-brand-100 bg-gradient-to-b from-brand-50/50 to-white p-5"
             >
               <h3 className="font-semibold text-gray-900">{b.title}</h3>
               <p className="mt-2 text-sm text-gray-600">{b.desc}</p>
@@ -69,25 +69,25 @@ export default async function ForEmployersPage() {
         <h2 className="text-xl font-bold text-gray-900">How enrollment works</h2>
         <ol className="mx-auto mt-6 max-w-md space-y-4 text-left text-sm text-gray-600">
           <li>
-            <span className="font-semibold text-emerald-700">1.</span> Employer
+            <span className="font-semibold text-brand-700">1.</span> Employer
             or transit partner launches a program (e.g. Summer 2026 RTP Intern
             Commute).
           </li>
           <li>
-            <span className="font-semibold text-emerald-700">2.</span> Commuters
+            <span className="font-semibold text-brand-700">2.</span> Commuters
             enroll via a branded link —{" "}
-            <Link href="/join/gotriangle" className="text-emerald-700 underline">
+            <Link href="/join/gotriangle" className="text-brand-700 underline">
               /join/gotriangle
             </Link>
             .
           </li>
           <li>
-            <span className="font-semibold text-emerald-700">3.</span> EcoLoop
+            <span className="font-semibold text-brand-700">3.</span> Cadence
             matches riders and drivers on shared corridors; partners view live TDM
             metrics at{" "}
             <Link
               href="/partner/gotriangle"
-              className="text-emerald-700 underline"
+              className="text-brand-700 underline"
             >
               /partner/gotriangle
             </Link>
@@ -97,8 +97,8 @@ export default async function ForEmployersPage() {
       </section>
 
       <footer className="border-t border-gray-100 py-8 text-center text-xs text-gray-400">
-        <Link href="/" className="hover:text-emerald-700">
-          ← EcoLoop home
+        <Link href="/" className="hover:text-brand-700">
+          ← Cadence home
         </Link>
       </footer>
     </main>

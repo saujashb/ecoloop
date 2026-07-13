@@ -6,7 +6,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 const benefits = [
   {
     title: "Complement RTP Connect",
-    desc: "RTP Connect subsidizes one-off Lyft/Uber trips. EcoLoop covers recurring daily commutes where fixed-route transit plus TNC subsidy still leaves gaps — especially for carless interns outside the service zone.",
+    desc: "RTP Connect subsidizes one-off Lyft/Uber trips. Cadence covers recurring daily commutes where fixed-route transit plus TNC subsidy still leaves gaps — especially for carless interns outside the service zone.",
   },
   {
     title: "Measurable TDM outcomes",
@@ -46,20 +46,20 @@ export default async function ForTransitPage() {
             Recurring carpools for corridors transit can&apos;t fully serve
           </h1>
           <p className="mt-5 text-lg text-gray-600">
-            EcoLoop helps GoTriangle and regional TDM partners fill first/last-mile
+            Cadence helps GoTriangle and regional TDM partners fill first/last-mile
             gaps for carless early-career commuters — with program-level reporting,
             not just another consumer app.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
               href="/partner/gotriangle"
-              className="rounded-xl bg-emerald-600 px-6 py-3 text-sm font-semibold text-white hover:bg-emerald-700"
+              className="rounded-xl bg-brand-600 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-700"
             >
               Live pilot report
             </Link>
             <Link
               href="/join/gotriangle"
-              className="rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 hover:border-emerald-400"
+              className="rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 hover:border-brand-400"
             >
               Commuter enrollment
             </Link>
@@ -72,7 +72,7 @@ export default async function ForTransitPage() {
           The commute that started this
         </h2>
         <p className="mt-6 text-sm leading-relaxed text-gray-600">
-          EcoLoop&apos;s founder is a Cisco RTP intern commuting from Chapel Hill
+          Cadence&apos;s founder is a Cisco RTP intern commuting from Chapel Hill
           without a car — for the second summer in a row. Chapel Hill means cheaper
           rent than stipend housing, but the daily reality is: Chapel Hill Transit
           (or a long walk) → GoTriangle to the Regional Transit Center (~1 hour) →
@@ -82,7 +82,7 @@ export default async function ForTransitPage() {
         <p className="mt-4 text-sm leading-relaxed text-gray-600">
           This summer, housing was picked within walking distance of a GoTriangle
           stop to shorten the first leg. The trip is still multi-modal, still daily,
-          still an hour-plus door-to-door. EcoLoop is the missing layer: a{" "}
+          still an hour-plus door-to-door. Cadence is the missing layer: a{" "}
           <strong>recurring carpool</strong> with someone already driving that
           corridor — complementing fixed-route service and RTP Connect, not replacing
           them.
@@ -94,7 +94,7 @@ export default async function ForTransitPage() {
 
       <section className="mx-auto max-w-4xl px-4 py-16">
         <h2 className="text-center text-2xl font-bold text-gray-900">
-          Why partner with EcoLoop
+          Why partner with Cadence
         </h2>
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           {benefits.map((b) => (
@@ -109,18 +109,18 @@ export default async function ForTransitPage() {
         </div>
       </section>
 
-      <section className="bg-emerald-950 px-4 py-16 text-white">
+      <section className="bg-brand-950 px-4 py-16 text-white">
         <div className="mx-auto max-w-3xl">
           <h2 className="text-2xl font-bold">Proposed GoTriangle pilot</h2>
           <ul className="mt-6 space-y-3">
             {pilotAsk.map((item) => (
-              <li key={item} className="flex gap-3 text-sm text-emerald-100">
-                <span className="mt-0.5 text-emerald-400">✓</span>
+              <li key={item} className="flex gap-3 text-sm text-brand-100">
+                <span className="mt-0.5 text-brand-400">✓</span>
                 {item}
               </li>
             ))}
           </ul>
-          <p className="mt-8 text-sm text-emerald-200/80">
+          <p className="mt-8 text-sm text-brand-200/80">
             Contact:{" "}
             <a
               href="mailto:commute@rtp.org"
@@ -128,7 +128,7 @@ export default async function ForTransitPage() {
             >
               commute@rtp.org
             </a>{" "}
-            (GoRTP) is the existing RTP TDM channel — EcoLoop proposes a
+            (GoRTP) is the existing RTP TDM channel — Cadence proposes a
             complementary recurring-carpool layer, not a replacement for RTP
             Connect or fixed-route service.
           </p>
@@ -136,8 +136,8 @@ export default async function ForTransitPage() {
       </section>
 
       <footer className="py-8 text-center text-xs text-gray-400">
-        <Link href="/" className="hover:text-emerald-700">
-          ← EcoLoop home
+        <Link href="/" className="hover:text-brand-700">
+          ← Cadence home
         </Link>
       </footer>
     </main>

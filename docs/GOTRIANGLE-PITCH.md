@@ -1,14 +1,14 @@
 # GoTriangle Partnership Pitch
 
-EcoLoop proposes a **90-day recurring carpool pilot** in Research Triangle Park, operated as a **B2B2C program under GoTriangle / GoRTP** — complementing fixed-route transit and RTP Connect, not competing with them.
+Cadence proposes a **90-day recurring carpool pilot** in Research Triangle Park, operated as a **B2B2C program under GoTriangle / GoRTP** — complementing fixed-route transit and RTP Connect, not competing with them.
 
 ## One-sentence pitch
 
-**EcoLoop fills the recurring daily commute gap for carless early-career workers in RTP — with measurable TDM outcomes GoTriangle can report, at lower per-trip cost than repeated TNC subsidies.**
+**Cadence fills the recurring daily commute gap for carless early-career workers in RTP — with measurable TDM outcomes GoTriangle can report, at lower per-trip cost than repeated TNC subsidies.**
 
 ## Founder context (why this exists)
 
-EcoLoop was built by a **current Cisco RTP intern** who has lived this commute for two summers in a row.
+Cadence was built by a **current Cisco RTP intern** who has lived this commute for two summers in a row.
 
 **The housing tradeoff:** Chapel Hill offers cheaper rent than company stipend housing — but only if you can actually get to RTP without a car.
 
@@ -21,7 +21,7 @@ EcoLoop was built by a **current Cisco RTP intern** who has lived this commute f
 
 **This summer:** The same stack — but housing was deliberately chosen within walking distance of a GoTriangle stop to shorten the first leg. Still multi-modal. Still daily. Still not a 20-minute trip.
 
-**What EcoLoop would change:** A recurring carpool with a driver already making the Chapel Hill → RTP corridor — same person every morning, flat fare, zero daily coordination. GoTriangle and RTP Connect stay in the stack where they help; EcoLoop fills the **recurring corridor** that no single mode solves today.
+**What Cadence would change:** A recurring carpool with a driver already making the Chapel Hill → RTP corridor — same person every morning, flat fare, zero daily coordination. GoTriangle and RTP Connect stay in the stack where they help; Cadence fills the **recurring corridor** that no single mode solves today.
 
 This is not a hypothetical TAM slide. It is the founder's commute.
 
@@ -32,14 +32,14 @@ This is not a hypothetical TAM slide. It is the founder's commute.
 - That helps **one trip at a time** — not a **10-week summer intern** going to the same campus every weekday.
 - Carless interns face $30–50/day Uber or 90-minute multi-leg transit; employers hear about it every summer.
 
-## What EcoLoop adds
+## What Cadence adds
 
-| RTP Connect / fixed route | EcoLoop |
+| RTP Connect / fixed route | Cadence |
 |---------------------------|---------|
 | One-off or first/last mile | **Recurring** Mon–Fri commute |
 | Subsidized TNC or bus | **Matched carpool** on existing driver corridors |
 | No relationship between trips | **Same driver, same rider** all season |
-| Agency pays per TNC trip | **Flat $4–8/ride** P2P; optional program fee to EcoLoop |
+| Agency pays per TNC trip | **Flat $4–8/ride** P2P; optional program fee to Cadence |
 
 ## Pilot structure (proposed)
 
@@ -64,7 +64,7 @@ This is not a hypothetical TAM slide. It is the founder's commute.
 - Optional: small per-enrollment or per-completed-ride program fee (negotiate)
 - Feedback on corridor priorities and transit stop handoffs
 
-### What EcoLoop provides
+### What Cadence provides
 
 - Matching platform (recurring schedule, zero-detour corridor algorithm)
 - Verified commuter onboarding (.edu + employer email)
@@ -73,7 +73,7 @@ This is not a hypothetical TAM slide. It is the founder's commute.
 
 ## Why not Scoop?
 
-[Scoop Commute](https://www.scoopcommute.com/) targets **1,000+ employee enterprises** with full enterprise contracts and Lyft backup. EcoLoop targets **seasonal intern cohorts** and **transit-agency pilots** — smaller, faster, cheaper to launch, aligned with GoTriangle's grant-funded TDM mission.
+[Scoop Commute](https://www.scoopcommute.com/) targets **1,000+ employee enterprises** with full enterprise contracts and Lyft backup. Cadence targets **seasonal intern cohorts** and **transit-agency pilots** — smaller, faster, cheaper to launch, aligned with GoTriangle's grant-funded TDM mission.
 
 ## Demo URLs (after deploy + seed)
 
@@ -92,7 +92,7 @@ Email **commute@rtp.org** (GoRTP / RTP transportation management):
 
 > Subject: Pilot proposal — recurring carpools for carless RTP interns (complements RTP Connect)
 >
-> Short body: I'm a Cisco RTP intern who commutes from Chapel Hill without a car — CH Transit → GoTriangle → RTP Connect, every day, while a direct drive is 20 minutes. I built EcoLoop to match recurring carpools on corridors like this. We have a live pilot stack and TDM dashboard. Seeking 30-min call to explore a 90-day GoTriangle co-branded pilot.
+> Short body: I'm a Cisco RTP intern who commutes from Chapel Hill without a car — CH Transit → GoTriangle → RTP Connect, every day, while a direct drive is 20 minutes. I built Cadence to match recurring carpools on corridors like this. We have a live pilot stack and TDM dashboard. Seeking 30-min call to explore a 90-day GoTriangle co-branded pilot.
 
 Attach: this doc, link to `/for-transit` and `/partner/gotriangle`.
 
@@ -128,4 +128,4 @@ Joint review with GoTriangle using `/partner/gotriangle` metrics. Decide: extend
 - **Employer:** summer cohort package ($5K–15K) for branded enrollment + reporting
 - **Grant-funded:** position as TDM mode-shift tool for regional sustainability grants
 
-EcoLoop does **not** need to take a cut of Venmo fares in the pilot — prove value first, monetize the **program layer**.
+Cadence does **not** need to take a cut of Venmo fares in the pilot — prove value first, monetize the **program layer**.

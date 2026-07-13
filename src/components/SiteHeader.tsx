@@ -12,13 +12,13 @@ export function SiteHeader({
     <header className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
       <Logo />
       <nav className="hidden items-center gap-6 text-sm font-medium text-gray-600 sm:flex">
-        <Link href="/for-transit" className="hover:text-emerald-700">
+        <Link href="/for-transit" className="hover:text-brand-700">
           For transit
         </Link>
-        <Link href="/for-employers" className="hover:text-emerald-700">
+        <Link href="/for-employers" className="hover:text-brand-700">
           For employers
         </Link>
-        <Link href="/join/gotriangle" className="hover:text-emerald-700">
+        <Link href="/join/gotriangle" className="hover:text-brand-700">
           Join pilot
         </Link>
       </nav>
@@ -31,7 +31,7 @@ export function SiteHeader({
         </Link>
         <Link
           href={ctaHref}
-          className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700"
+          className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-700"
         >
           {ctaLabel}
         </Link>

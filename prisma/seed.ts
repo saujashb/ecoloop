@@ -136,14 +136,14 @@ async function seedPartnerOrganizations() {
     where: { slug: "gotriangle" },
     update: {
       description:
-        "Regional transit and TDM partner for the Research Triangle. EcoLoop complements fixed-route service and RTP Connect with recurring carpool matching for carless early-career commuters.",
+        "Regional transit and TDM partner for the Research Triangle. Cadence complements fixed-route service and RTP Connect with recurring carpool matching for carless early-career commuters.",
     },
     create: {
       slug: "gotriangle",
       name: "GoTriangle",
       type: "transit_agency",
       description:
-        "Regional transit and TDM partner for the Research Triangle. EcoLoop complements fixed-route service and RTP Connect with recurring carpool matching for carless early-career commuters.",
+        "Regional transit and TDM partner for the Research Triangle. Cadence complements fixed-route service and RTP Connect with recurring carpool matching for carless early-career commuters.",
       region: "Research Triangle, NC",
       website: "https://gotriangle.org",
       contactEmail: "commute@rtp.org",

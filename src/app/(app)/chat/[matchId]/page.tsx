@@ -45,7 +45,7 @@ export default async function ChatPage({
       <AutoRefresh />
       <div className="flex items-center justify-between border-b border-gray-200 pb-3">
         <div>
-          <Link href="/matches" className="text-xs text-emerald-700 hover:underline">
+          <Link href="/matches" className="text-xs text-brand-700 hover:underline">
             ← Back to matches
           </Link>
           <h1 className="text-lg font-semibold text-gray-900">{other.name}</h1>
@@ -71,7 +71,7 @@ export default async function ChatPage({
               <div
                 className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${
                   mine
-                    ? "rounded-br-sm bg-emerald-600 text-white"
+                    ? "rounded-br-sm bg-brand-600 text-white"
                     : "rounded-bl-sm bg-gray-100 text-gray-900"
                 }`}
               >
@@ -83,7 +83,7 @@ export default async function ChatPage({
                 <p>{msg.body}</p>
                 <p
                   className={`mt-1 text-right text-[10px] ${
-                    mine ? "text-emerald-100" : "text-gray-400"
+                    mine ? "text-brand-100" : "text-gray-400"
                   }`}
                 >
                   {msg.createdAt.toLocaleTimeString("en-US", {
@@ -107,9 +107,9 @@ export default async function ChatPage({
           required
           autoComplete="off"
           placeholder={`Message ${other.name.split(" ")[0]}…`}
-          className="flex-1 rounded-full border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          className="flex-1 rounded-full border border-gray-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
         />
-        <button className="rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700">
+        <button className="rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700">
           Send
         </button>
       </form>

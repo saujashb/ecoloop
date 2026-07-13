@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { LeafIcon } from "@/components/Logo";
+import { CadenceMark } from "@/components/Logo";
 import { SiteHeader } from "@/components/SiteHeader";
 
 const partnerStats = [
@@ -37,33 +37,34 @@ export default async function LandingPage() {
     <main className="min-h-dvh bg-white">
       <SiteHeader ctaHref="/join/gotriangle" ctaLabel="Join pilot" />
 
-      <section className="bg-gradient-to-b from-emerald-50 via-emerald-50/40 to-white">
+      <section className="bg-gradient-to-b from-brand-50 via-brand-50/40 to-white">
         <div className="mx-auto max-w-5xl px-4 pb-20 pt-16 text-center">
-          <p className="mx-auto mb-4 w-fit rounded-full border border-emerald-200 bg-white px-3 py-1 text-xs font-medium text-emerald-700">
+          <p className="mx-auto mb-4 w-fit rounded-full border border-brand-200 bg-white px-3 py-1 text-xs font-medium text-brand-700">
             B2B2C commute programs · Piloting in Research Triangle Park
           </p>
           <h1 className="mx-auto max-w-3xl text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
             Recurring carpools for{" "}
-            <span className="text-emerald-600">corridors transit can&apos;t fully serve</span>
+            <span className="text-brand-600">corridors transit can&apos;t fully serve</span>
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-gray-600">
-            EcoLoop partners with transit agencies and employers to match carless
+            Cadence partners with transit agencies and employers to match carless
             early-career commuters with drivers already on their daily route —
             with program-level TDM reporting, not just another rideshare app.
           </p>
-          <p className="mx-auto mt-3 max-w-xl text-sm text-emerald-700">
-            Built by a Cisco RTP intern who commutes from Chapel Hill without a car.
+          <p className="mx-auto mt-3 max-w-xl text-sm text-brand-700">
+            Your daily commute, matched once. Built by a Cisco RTP intern who commutes
+            from Chapel Hill without a car.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
               href="/for-transit"
-              className="rounded-xl bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+              className="rounded-xl bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700"
             >
               For transit partners
             </Link>
             <Link
               href="/join/gotriangle"
-              className="rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 transition hover:border-emerald-400"
+              className="rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 transition hover:border-brand-400"
             >
               I&apos;m a commuter
             </Link>
@@ -71,7 +72,7 @@ export default async function LandingPage() {
           <div className="mx-auto mt-12 grid max-w-2xl grid-cols-3 gap-4 text-center">
             {partnerStats.map(([stat, label]) => (
               <div key={label}>
-                <p className="text-lg font-bold text-emerald-700">{stat}</p>
+                <p className="text-lg font-bold text-brand-700">{stat}</p>
                 <p className="text-xs text-gray-500">{label}</p>
               </div>
             ))}
@@ -108,8 +109,8 @@ export default async function LandingPage() {
             within walking distance of a GoTriangle stop — shortening leg one, but
             not solving the whole trip.
           </p>
-          <p className="font-medium text-emerald-800">
-            EcoLoop matches a recurring carpool on that corridor — same driver,
+          <p className="font-medium text-brand-800">
+            Cadence matches a recurring carpool on that corridor — same driver,
             same rider, flat fare — so GoTriangle and RTP Connect stay where they
             help, and the daily grind gets simpler.
           </p>
@@ -124,7 +125,7 @@ export default async function LandingPage() {
           {[
             [
               "Complements RTP Connect",
-              "Subsidized TNC trips help one ride at a time. EcoLoop solves the recurring daily commute for carless interns outside the zone.",
+              "Subsidized TNC trips help one ride at a time. Cadence solves the recurring daily commute for carless interns outside the zone.",
             ],
             [
               "Zero-detour matching",
@@ -143,17 +144,17 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      <section className="bg-emerald-950 py-16 text-white">
+      <section className="bg-brand-950 py-16 text-white">
         <div className="mx-auto max-w-5xl px-4">
           <h2 className="text-center text-2xl font-bold">How programs work</h2>
           <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((step, i) => (
               <div key={step.title}>
-                <span className="grid h-9 w-9 place-items-center rounded-full bg-emerald-500 font-bold text-emerald-950">
+                <span className="grid h-9 w-9 place-items-center rounded-full bg-brand-500 font-bold text-brand-950">
                   {i + 1}
                 </span>
                 <h3 className="mt-3 font-semibold">{step.title}</h3>
-                <p className="mt-1 text-sm text-emerald-100/80">{step.desc}</p>
+                <p className="mt-1 text-sm text-brand-100/80">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -179,7 +180,7 @@ export default async function LandingPage() {
           </Link>
           <Link
             href="/for-employers"
-            className="rounded-2xl border border-emerald-100 bg-gradient-to-b from-emerald-50 to-white p-6 transition hover:border-emerald-200"
+            className="rounded-2xl border border-brand-100 bg-gradient-to-b from-brand-50 to-white p-6 transition hover:border-brand-200"
           >
             <h3 className="text-lg font-semibold text-gray-900">
               For employers &amp; intern programs
@@ -188,7 +189,7 @@ export default async function LandingPage() {
               Reliable commutes for carless interns, ESG commute reporting, branded
               enrollment links.
             </p>
-            <span className="mt-4 inline-block text-sm font-medium text-emerald-700">
+            <span className="mt-4 inline-block text-sm font-medium text-brand-700">
               View employer info →
             </span>
           </Link>
@@ -196,21 +197,21 @@ export default async function LandingPage() {
       </section>
 
       <section className="mx-auto max-w-5xl px-4 pb-20">
-        <div className="rounded-2xl bg-emerald-600 px-6 py-12 text-center text-white">
+        <div className="rounded-2xl bg-brand-600 px-6 py-12 text-center text-white">
           <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-white/15">
-            <LeafIcon className="h-7 w-7" />
+            <CadenceMark className="h-7 w-7" />
           </span>
           <h2 className="mt-4 text-2xl font-bold">
             See the GoTriangle pilot report
           </h2>
-          <p className="mx-auto mt-2 max-w-lg text-emerald-50">
+          <p className="mx-auto mt-2 max-w-lg text-brand-50">
             Live program metrics: enrollment, completed carpools, miles shared, and
             CO₂ avoided — built for TDM partners.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Link
               href="/partner/gotriangle"
-              className="inline-block rounded-xl bg-white px-6 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50"
+              className="inline-block rounded-xl bg-white px-6 py-3 text-sm font-semibold text-brand-700 transition hover:bg-brand-50"
             >
               Partner dashboard
             </Link>
@@ -225,8 +226,8 @@ export default async function LandingPage() {
       </section>
 
       <footer className="border-t border-gray-100 py-8 text-center text-xs text-gray-400">
-        EcoLoop — institutional commute programs. Riders pay drivers directly;
-        EcoLoop is a connector, not a transportation provider.
+        Cadence — institutional commute programs. Riders pay drivers directly;
+        Cadence is a connector, not a transportation provider.
       </footer>
     </main>
   );
