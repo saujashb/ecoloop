@@ -131,7 +131,82 @@ const seedUsers = [
   },
 ] as const;
 
+async function seedPartnerOrganizations() {
+  const gotriangle = await prisma.organization.upsert({
+    where: { slug: "gotriangle" },
+    update: {
+      description:
+        "Regional transit and TDM partner for the Research Triangle. EcoLoop complements fixed-route service and RTP Connect with recurring carpool matching for carless early-career commuters.",
+    },
+    create: {
+      slug: "gotriangle",
+      name: "GoTriangle",
+      type: "transit_agency",
+      description:
+        "Regional transit and TDM partner for the Research Triangle. EcoLoop complements fixed-route service and RTP Connect with recurring carpool matching for carless early-career commuters.",
+      region: "Research Triangle, NC",
+      website: "https://gotriangle.org",
+      contactEmail: "commute@rtp.org",
+    },
+  });
+
+  const program = await prisma.program.upsert({
+    where: {
+      organizationId_slug: {
+        organizationId: gotriangle.id,
+        slug: "rtp-intern-commute-2026",
+      },
+    },
+    update: {},
+    create: {
+      organizationId: gotriangle.id,
+      slug: "rtp-intern-commute-2026",
+      name: "RTP Recurring Carpool Pilot",
+      description:
+        "Summer 2026 pilot matching carless interns with drivers on existing RTP corridors.",
+      status: "pilot",
+    },
+  });
+
+  await prisma.organization.upsert({
+    where: { slug: "cisco-rtp" },
+    update: {},
+    create: {
+      slug: "cisco-rtp",
+      name: "Cisco RTP",
+      type: "employer",
+      description: "Employer program for summer interns commuting to Cisco RTP campus.",
+      region: "Research Triangle Park, NC",
+      website: "https://www.cisco.com",
+    },
+  });
+
+  return { gotriangleId: gotriangle.id, programId: program.id };
+}
+
+async function enrollUsersInGoTriangle(
+  userIds: Iterable<string>,
+  gotriangleId: string,
+  programId: string
+) {
+  for (const userId of userIds) {
+    await prisma.organizationMember.upsert({
+      where: {
+        userId_organizationId: { userId, organizationId: gotriangleId },
+      },
+      create: {
+        userId,
+        organizationId: gotriangleId,
+        programId,
+        role: "commuter",
+      },
+      update: { programId },
+    });
+  }
+}
+
 async function upsertDemoUsers(passwordHash: string) {
+  const { gotriangleId, programId } = await seedPartnerOrganizations();
   const clusters = await Promise.all(
     [
       {
@@ -232,21 +307,23 @@ async function upsertDemoUsers(passwordHash: string) {
 
   const mayaId = usersByEmail.get("maya@ncsu.edu");
   const alexId = usersByEmail.get("alex.chen@cisco.com");
-  if (!mayaId || !alexId) return;
+  if (mayaId && alexId) {
+    const demoMatch = await prisma.match.findFirst({
+      where: {
+        riderSchedule: { userId: mayaId },
+        driverSchedule: { userId: alexId },
+      },
+    });
+    if (demoMatch) {
+      await prisma.match.update({
+        where: { id: demoMatch.id },
+        data: { status: "accepted" },
+      });
+      await generateRides(demoMatch.id);
+    }
+  }
 
-  const demoMatch = await prisma.match.findFirst({
-    where: {
-      riderSchedule: { userId: mayaId },
-      driverSchedule: { userId: alexId },
-    },
-  });
-  if (!demoMatch) return;
-
-  await prisma.match.update({
-    where: { id: demoMatch.id },
-    data: { status: "accepted" },
-  });
-  await generateRides(demoMatch.id);
+  await enrollUsersInGoTriangle(usersByEmail.values(), gotriangleId, programId);
 }
 
 async function main() {
@@ -262,9 +339,14 @@ async function main() {
   await prisma.ride.deleteMany();
   await prisma.match.deleteMany();
   await prisma.clusterMember.deleteMany();
+  await prisma.organizationMember.deleteMany();
   await prisma.commuteSchedule.deleteMany();
+  await prisma.program.deleteMany();
+  await prisma.organization.deleteMany();
   await prisma.cluster.deleteMany();
   await prisma.user.deleteMany();
+
+  const { gotriangleId, programId } = await seedPartnerOrganizations();
 
   const clusters = await Promise.all(
     [
@@ -399,6 +481,8 @@ async function main() {
       ],
     });
   }
+
+  await enrollUsersInGoTriangle(usersByEmail.values(), gotriangleId, programId);
 }
 
 main()

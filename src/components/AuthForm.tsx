@@ -5,7 +5,14 @@ import Link from "next/link";
 import { login, signup, type FormState } from "@/lib/actions";
 import { Logo } from "./Logo";
 
-export function AuthForm({ mode }: { mode: "login" | "signup" }) {
+type AuthFormProps = {
+  mode: "login" | "signup";
+  orgSlug?: string;
+  orgName?: string;
+  programName?: string;
+};
+
+export function AuthForm({ mode, orgSlug, orgName, programName }: AuthFormProps) {
   const action = mode === "login" ? login : signup;
   const [state, formAction, pending] = useActionState<FormState, FormData>(
     action,
@@ -18,6 +25,14 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         <div className="mb-8 flex justify-center">
           <Logo />
         </div>
+        {orgName && mode === "signup" && (
+          <div className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-center text-sm text-emerald-900">
+            <p className="font-semibold">Joining via {orgName}</p>
+            {programName && (
+              <p className="mt-1 text-emerald-700">{programName}</p>
+            )}
+          </div>
+        )}
         <div className="rounded-2xl border border-emerald-100 bg-white p-6 shadow-sm">
           <h1 className="text-xl font-semibold text-gray-900">
             {mode === "login" ? "Welcome back" : "Create your account"}
@@ -25,10 +40,15 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
           <p className="mt-1 text-sm text-gray-500">
             {mode === "login"
               ? "Sign in to manage your commute."
-              : "Use your school or work email to get verified instantly."}
+              : orgName
+                ? "Use your school or work email — your enrollment is linked to this program."
+                : "Use your school or work email to get verified instantly."}
           </p>
 
           <form action={formAction} className="mt-6 space-y-4">
+            {orgSlug && mode === "signup" && (
+              <input type="hidden" name="orgSlug" value={orgSlug} />
+            )}
             {mode === "signup" && (
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">
@@ -95,7 +115,10 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
           {mode === "login" ? (
             <>
               New to EcoLoop?{" "}
-              <Link href="/signup" className="font-medium text-emerald-700 hover:underline">
+              <Link
+                href={orgSlug ? `/signup?org=${orgSlug}` : "/signup"}
+                className="font-medium text-emerald-700 hover:underline"
+              >
                 Create an account
               </Link>
             </>

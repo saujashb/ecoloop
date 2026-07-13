@@ -25,9 +25,57 @@ model User {
   sessionVersion Int      @default(0)
   createdAt      DateTime @default(now())
 
-  schedules CommuteSchedule[]
-  messages  Message[]
-  clusters  ClusterMember[]
+  schedules            CommuteSchedule[]
+  messages             Message[]
+  clusters             ClusterMember[]
+  organizationMembers  OrganizationMember[]
+}
+
+model Organization {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  name         String
+  type         String // employer | transit_agency
+  description  String?
+  region       String?
+  website      String?
+  contactEmail String?
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  programs Program[]
+  members  OrganizationMember[]
+}
+
+model Program {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  slug           String
+  name           String
+  description    String?
+  status         String       @default("active") // active | pilot | ended
+  startsAt       DateTime?
+  endsAt         DateTime?
+  createdAt      DateTime     @default(now())
+
+  members OrganizationMember[]
+
+  @@unique([organizationId, slug])
+}
+
+model OrganizationMember {
+  id             String       @id @default(cuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  programId      String?
+  program        Program?     @relation(fields: [programId], references: [id], onDelete: SetNull)
+  role           String       @default("commuter") // commuter | admin
+  joinedAt       DateTime     @default(now())
+
+  @@unique([userId, organizationId])
 }
 
 model CommuteSchedule {

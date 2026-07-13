@@ -57,6 +57,12 @@ export default async function DevDashboardPage() {
           </div>
           <div className="flex items-center gap-3">
             <Link
+              href="/partner/gotriangle"
+              className="text-sm text-emerald-400 hover:text-white"
+            >
+              Partner report →
+            </Link>
+            <Link
               href="/"
               className="text-sm text-slate-400 hover:text-white"
             >

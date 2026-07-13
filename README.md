@@ -1,22 +1,32 @@
 # EcoLoop
 
-Community-powered commuting. EcoLoop matches riders (interns, students, early-career
-professionals) with drivers already making the same daily commute — recurring,
-pre-scheduled, zero-detour rides at a flat fare.
+**B2B2C institutional commute programs** for transit agencies and employers.
+EcoLoop matches carless early-career commuters with drivers already making the
+same daily trip — recurring, pre-scheduled, zero-detour carpools with **partner-level
+TDM reporting**.
+
+Pilot partner: **GoTriangle** (Research Triangle Park). See `docs/GOTRIANGLE-PITCH.md`.
 
 ## Features
 
+### Commuter app
 - **Recurring commute scheduling** — set origin, destination, arrival window, and days once
 - **Matching engine** — pairs riders with drivers by day overlap, arrival-window overlap,
-  destination proximity, and a zero-detour corridor check; scores by fit and shared clusters
-- **Match proposals** — accept/decline cards; accepting auto-generates upcoming rides
-- **Dashboard** — today's ride, next 7 days, cancel/complete actions, Venmo pay link
-- **Trust layer** — instant verification for `.edu`/known company email domains, bios,
-  ride preferences, emergency contact
-- **Community feed** — nearby commuters and joinable micro-clusters (e.g. "RTP Interns")
-- **Per-match chat** — lightweight message threads with auto-refresh
-- **Impact page** — ride history, money saved vs. Uber, CO2 avoided
-- **Payments out of app** — suggested flat fare ($3–8 by distance) paid rider→driver via Venmo
+  destination proximity, and a zero-detour corridor check
+- **Match proposals** — accept/decline; accepting auto-generates upcoming rides
+- **Dashboard** — today's ride, next 7 days, Venmo pay link
+- **Trust layer** — `.edu`/employer email verification, bios, emergency contact
+- **Impact page** — ride history, money saved vs. Uber, CO₂ avoided
+
+### Institutional layer (B2B2C)
+- **Organizations & programs** — employers and transit agencies (`Organization`, `Program`)
+- **Branded enrollment** — `/join/[slug]` (e.g. `/join/gotriangle`)
+- **Partner TDM dashboard** — `/partner/[slug]` with enrollment, rides, miles, CO₂, SOV avoided
+- **Program-linked signup** — commuters enrolled in partner org on registration
+
+### Marketing
+- `/for-transit` — transit agency / GoTriangle pitch page
+- `/for-employers` — employer / intern program page
 
 ## Stack
 
@@ -64,12 +74,15 @@ Morrisville, Apex, Durham, Raleigh, and Chapel Hill commuting to the Cisco RTP c
 
 ## Project layout
 
-- `prisma/schema.prisma` — User, CommuteSchedule, Match, Ride, Cluster, Message
+- `prisma/schema.prisma` — User, Organization, Program, OrganizationMember, CommuteSchedule, Match, Ride, Cluster, Message
+- `src/lib/organizations.ts` — partner enrollment helpers
+- `src/lib/partner-stats.ts` — TDM metrics for `/partner/[slug]`
 - `src/lib/matching.ts` — matching engine and ride generation
 - `src/lib/geo.ts` — haversine/corridor math, fare, Uber estimate, CO2 formulas
-- `src/lib/actions.ts` — all server actions (auth, onboarding, matches, rides, chat)
-- `src/app/(app)/` — authenticated app (dashboard, matches, community, impact, chat, profile)
-- `src/components/LocationPicker.tsx` — Leaflet map + Nominatim search picker
+- `src/lib/actions.ts` — server actions (auth, onboarding, matches, rides, chat)
+- `src/app/(app)/` — authenticated commuter app
+- `src/app/for-transit/`, `for-employers/`, `join/[slug]/`, `partner/[slug]/` — B2B2C surfaces
+- `docs/GOTRIANGLE-PITCH.md` — outreach plan for GoTriangle
 
 ## Dev dashboard
 

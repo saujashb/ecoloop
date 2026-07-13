@@ -12,6 +12,7 @@ import {
   requireUser,
   revokeAllSessions,
 } from "./auth";
+import { enrollUserByOrgSlug } from "./organizations";
 import {
   findMatchesForUser,
   generateRides,
@@ -74,6 +75,10 @@ export async function signup(_prev: FormState, formData: FormData): Promise<Form
   if (existing) return { error: "Invalid email or password." };
 
   const emailDomain = email.split("@")[1];
+  const orgSlug = clampString(
+    String(formData.get("orgSlug") ?? "").trim(),
+    64
+  );
   const user = await prisma.user.create({
     data: {
       name,
@@ -83,6 +88,10 @@ export async function signup(_prev: FormState, formData: FormData): Promise<Form
       passwordHash: await bcrypt.hash(password, 10),
     },
   });
+
+  if (orgSlug) {
+    await enrollUserByOrgSlug(user.id, orgSlug);
+  }
 
   await createSession(user.id);
   redirect("/onboarding");
