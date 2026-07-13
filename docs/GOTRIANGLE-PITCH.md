@@ -45,8 +45,8 @@ This is not a hypothetical TAM slide. It is the founder's commute.
 
 **Duration:** 90 days (align with summer intern season)  
 **Geography:** Research Triangle Park corridors into major campuses (Cisco, IBM, TI, etc.)  
-**Enrollment:** Co-branded link — `yoursite.com/join/gotriangle`  
-**Reporting:** Live partner dashboard — `yoursite.com/partner/gotriangle`
+**Enrollment:** Co-branded link — `https://cadence-ecol00p.vercel.app/join/gotriangle`  
+**Reporting:** Live partner dashboard — `https://cadence-ecol00p.vercel.app/partner/gotriangle`
 
 ### Success metrics (agree upfront)
 
