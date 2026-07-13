@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   title: "Cadence — Recurring corridor carpools",
   description:
     "Cadence matches carless early-career commuters with drivers already on their daily route — institutional commute programs with TDM reporting for transit and employer partners.",
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/apple-icon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default function RootLayout({

@@ -37,9 +37,9 @@ export default async function ForTransitPage() {
     <main className="min-h-dvh bg-white">
       <SiteHeader ctaHref="/join/gotriangle" ctaLabel="View pilot" />
 
-      <section className="bg-gradient-to-b from-sky-50 to-white px-4 py-16">
+      <section className="bg-gradient-to-b from-transit-50 to-white px-4 py-16">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-sky-700">
+          <p className="text-xs font-semibold uppercase tracking-widest text-transit-700">
             For transit agencies &amp; TDM partners
           </p>
           <h1 className="mt-3 text-4xl font-bold text-gray-900">
@@ -53,13 +53,13 @@ export default async function ForTransitPage() {
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
               href="/partner/gotriangle"
-              className="rounded-xl bg-brand-600 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-700"
+              className="rounded-xl bg-transit-700 px-6 py-3 text-sm font-semibold text-white hover:bg-transit-900"
             >
               Live pilot report
             </Link>
             <Link
               href="/join/gotriangle"
-              className="rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 hover:border-brand-400"
+              className="rounded-xl border border-transit-200 bg-white px-6 py-3 text-sm font-semibold text-gray-700 hover:border-transit-500"
             >
               Commuter enrollment
             </Link>
@@ -87,7 +87,7 @@ export default async function ForTransitPage() {
           corridor — complementing fixed-route service and RTP Connect, not replacing
           them.
         </p>
-        <p className="mt-6 rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-center text-sm font-medium text-sky-900">
+        <p className="mt-6 rounded-xl border border-transit-200 bg-transit-50 px-4 py-3 text-center text-sm font-medium text-transit-900">
           Pilot corridor: Chapel Hill ↔ Research Triangle Park (Cisco RTP and peers)
         </p>
       </section>
@@ -100,7 +100,7 @@ export default async function ForTransitPage() {
           {benefits.map((b) => (
             <div
               key={b.title}
-              className="rounded-xl border border-gray-200 p-5"
+              className="rounded-xl border border-transit-100 bg-gradient-to-b from-transit-50/40 to-white p-5"
             >
               <h3 className="font-semibold text-gray-900">{b.title}</h3>
               <p className="mt-2 text-sm text-gray-600">{b.desc}</p>
@@ -109,18 +109,18 @@ export default async function ForTransitPage() {
         </div>
       </section>
 
-      <section className="bg-brand-950 px-4 py-16 text-white">
+      <section className="bg-transit-900 px-4 py-16 text-white">
         <div className="mx-auto max-w-3xl">
           <h2 className="text-2xl font-bold">Proposed GoTriangle pilot</h2>
           <ul className="mt-6 space-y-3">
             {pilotAsk.map((item) => (
-              <li key={item} className="flex gap-3 text-sm text-brand-100">
-                <span className="mt-0.5 text-brand-400">✓</span>
+              <li key={item} className="flex gap-3 text-sm text-transit-100">
+                <span className="mt-0.5 text-transit-500">✓</span>
                 {item}
               </li>
             ))}
           </ul>
-          <p className="mt-8 text-sm text-brand-200/80">
+          <p className="mt-8 text-sm text-transit-200">
             Contact:{" "}
             <a
               href="mailto:commute@rtp.org"
@@ -136,7 +136,7 @@ export default async function ForTransitPage() {
       </section>
 
       <footer className="py-8 text-center text-xs text-gray-400">
-        <Link href="/" className="hover:text-brand-700">
+        <Link href="/" className="hover:text-transit-700">
           ← Cadence home
         </Link>
       </footer>

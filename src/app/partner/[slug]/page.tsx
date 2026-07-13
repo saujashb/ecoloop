@@ -8,14 +8,28 @@ function StatCard({
   label,
   value,
   sub,
+  metric = false,
 }: {
   label: string;
   value: string | number;
   sub?: string;
+  metric?: boolean;
 }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+    <div
+      className={
+        metric
+          ? "rounded-xl border border-tdm-200 bg-gradient-to-b from-tdm-50 to-white p-4 shadow-sm"
+          : "rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+      }
+    >
+      <p
+        className={
+          metric
+            ? "text-xs font-semibold uppercase tracking-wide text-tdm-700"
+            : "text-xs font-semibold uppercase tracking-wide text-slate-500"
+        }
+      >
         {label}
       </p>
       <p className="mt-1 text-2xl font-bold text-slate-900">{value}</p>
@@ -42,7 +56,7 @@ export default async function PartnerReportPage({
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-5">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-brand-600">
+            <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
               Cadence partner report
             </p>
             <h1 className="text-xl font-bold text-slate-900">
@@ -51,7 +65,7 @@ export default async function PartnerReportPage({
             {stats.program && (
               <p className="text-sm text-slate-600">
                 {stats.program.name}
-                <span className="ml-2 rounded-full bg-brand-100 px-2 py-0.5 text-xs font-medium text-brand-800">
+                <span className="ml-2 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
                   {stats.program.status}
                 </span>
               </p>
@@ -59,7 +73,7 @@ export default async function PartnerReportPage({
           </div>
           <Link
             href={isTransit ? "/for-transit" : "/for-employers"}
-            className="text-sm text-slate-500 hover:text-brand-700"
+            className="text-sm text-slate-500 hover:text-transit-700"
           >
             ← Partner info
           </Link>
@@ -67,9 +81,9 @@ export default async function PartnerReportPage({
       </header>
 
       <div className="mx-auto max-w-5xl space-y-8 px-4 py-8">
-        <section className="rounded-2xl border border-brand-200 bg-brand-50 px-6 py-5">
-          <h2 className="font-semibold text-brand-900">TDM impact summary</h2>
-          <p className="mt-2 text-sm text-brand-800">
+        <section className="rounded-2xl border border-tdm-200 bg-tdm-50 px-6 py-5">
+          <h2 className="font-semibold text-tdm-900">TDM impact summary</h2>
+          <p className="mt-2 text-sm text-tdm-800">
             {isTransit
               ? "Recurring carpools complement fixed-route transit by filling first/last-mile gaps for carless early-career commuters — with measurable mode shift away from single-occupancy vehicles and subsidized TNC trips."
               : "Program participation, match rates, and commute reliability for carless employees and interns."}
@@ -97,21 +111,24 @@ export default async function PartnerReportPage({
             Mobility &amp; environmental outcomes
           </h2>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <StatCard label="Completed rides" value={o.completedRides} />
+            <StatCard label="Completed rides" value={o.completedRides} metric />
             <StatCard
               label="Miles shared"
               value={o.milesShared}
               sub="passenger-miles in carpools"
+              metric
             />
             <StatCard
               label="CO₂ avoided"
               value={`${o.co2AvoidedKg} kg`}
               sub="EPA passenger-car equivalent"
+              metric
             />
             <StatCard
               label="SOV trips avoided"
               value={o.soloTripsAvoided}
               sub="vs. driving alone or TNC"
+              metric
             />
           </div>
         </section>
@@ -130,7 +147,7 @@ export default async function PartnerReportPage({
                     title={`${w.week}: ${w.count}`}
                   >
                     <div
-                      className="w-full rounded-t bg-brand-500"
+                      className="w-full rounded-t bg-tdm-600"
                       style={{
                         height: `${Math.max(4, (w.count / maxWeek) * 100)}%`,
                       }}

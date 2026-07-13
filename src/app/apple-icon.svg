@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-label="Cadence">
+  <rect width="180" height="180" rx="40" fill="#c2410c"/>
+  <path d="M28 90h78" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+  <path d="M84 90l22 22" stroke="#fff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="106" cy="112" r="8" fill="#fff"/>
+  <path d="M28 68h56" stroke="#fff" stroke-width="11" stroke-linecap="round" opacity="0.55"/>
+</svg>

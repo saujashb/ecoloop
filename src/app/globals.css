@@ -31,8 +31,14 @@
   --color-transit-700: #0369a1;
   --color-transit-900: #0c4a6e;
 
+  --color-tdm-50: #f0fdfa;
+  --color-tdm-100: #ccfbf1;
+  --color-tdm-200: #99f6e4;
+  --color-tdm-500: #14b8a6;
   --color-tdm-600: #0d9488;
   --color-tdm-700: #0f766e;
+  --color-tdm-800: #115e59;
+  --color-tdm-900: #134e4a;
 }
 
 body {

@@ -215,7 +215,7 @@ export default async function DevDashboardPage() {
                   {d.count > 0 ? d.count : ""}
                 </span>
                 <div
-                  className="w-full rounded-t bg-brand-600/80"
+                  className="w-full rounded-t bg-tdm-600/80"
                   style={{
                     height: `${Math.max(4, (d.count / maxSignup) * 80)}px`,
                   }}
